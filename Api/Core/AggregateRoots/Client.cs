@@ -1,6 +1,6 @@
-using Api.Domain.ValueObjects;
+using Api.Core.ValueObjects;
 
-namespace Api.Domain.AggregateRoots;
+namespace Api.Core.AggregateRoots;
 
 public class Client
 {

@@ -6,4 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Queries\" />
+    <Folder Include="Application\QueryHandlers\" />
+    <Folder Include="Application\QueryInterfaces\" />
+  </ItemGroup>
+
 </Project>

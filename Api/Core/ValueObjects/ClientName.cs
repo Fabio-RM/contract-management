@@ -1,4 +1,4 @@
-namespace Api.Domain.ValueObjects;
+namespace Api.Core.ValueObjects;
 
 public record ClientName
 {

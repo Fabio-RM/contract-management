@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Api.Domain.ValueObjects;
+namespace Api.Core.ValueObjects;
 
 public record ClientCnpj
 {
