@@ -1,42 +1,50 @@
+using Api.Core.Exceptions;
 using Api.Core.ValueObjects;
 
 namespace Api.Core.AggregateRoots;
 
 public class Client
 {
-    public Guid Id { get; private  set; }
+    private enum ClientStatus { Active, Inactive }
+    public Guid Id { get; private set; }
     public ClientCnpj Cnpj { get; private set; }
     public ClientName Name { get; private set; }
-    public bool IsActive { get; private set; }
+    private ClientStatus Status { get; set; }
 
-    public Client(ClientCnpj cnpj, ClientName name)
+    private Client(ClientCnpj cnpj, ClientName name)
     {
-        if (cnpj == null) throw new ArgumentNullException(nameof(cnpj));
-        if (name == null) throw new ArgumentNullException(nameof(name));
+        ArgumentNullException.ThrowIfNull(cnpj);
+        ArgumentNullException.ThrowIfNull(name);
         
         Id = Guid.NewGuid();
         Cnpj = cnpj;
         Name = name;
-        IsActive = true;
+        Status = ClientStatus.Active;
+    }
+    
+    // Factory Method
+    public static Client Create(ClientCnpj cnpj, ClientName name)
+    {
+        return new Client(cnpj, name);
     }
 
-    public void ChangeClientName(ClientName name)
+    public void Rename(ClientName name)
     {
-        if (name == null) throw new ArgumentNullException(nameof(name));
-        if (!IsActive) throw new InvalidOperationException("Client is not active");
+        ArgumentNullException.ThrowIfNull(name);
+        if (Status == ClientStatus.Inactive) throw new ClientInactiveException();
         
         Name = name;
     }
     
     public void Deactivate()
     {
-        if (!IsActive) throw new InvalidOperationException("Client is not active"); 
-        IsActive = false;
+        if (Status == ClientStatus.Inactive) throw new ClientInactiveException(); 
+        Status = ClientStatus.Inactive;
     }
 
     public void Activate()
     {
-        if (IsActive) throw new InvalidOperationException("Client is already active");
-        IsActive = true;
+        if (Status == ClientStatus.Active) throw new ClientActiveException();
+        Status = ClientStatus.Active;
     }
 }

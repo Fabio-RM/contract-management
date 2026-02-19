@@ -24,7 +24,7 @@ public class CreateClientCommandHandler
         if (cnpjExists)
             throw new ClientAlreadyExistsException($"Client {cnpj} already exists");
         
-        var client = new Client(cnpj, name);
+        var client = Client.Create(cnpj, name);
         await _repository.AddAsync(client);
         
         return client.Id;
