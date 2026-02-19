@@ -2,7 +2,7 @@ namespace Api.Application.Exceptions;
 
 public class ClientAlreadyExistsException : Exception
 {
-    public ClientAlreadyExistsException(string message) : base(message)
+    public ClientAlreadyExistsException() : base("Client already exists")
     {
     }
 }
