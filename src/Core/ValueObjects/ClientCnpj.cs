@@ -1,8 +1,9 @@
 using System.Text.RegularExpressions;
+using Core.Common;
 
 namespace Core.ValueObjects;
 
-public record ClientCnpj
+public class ClientCnpj : ValueObject
 {
     private const int MaxLength = 14;
 
@@ -22,5 +23,10 @@ public record ClientCnpj
             throw new ArgumentException($"CNPJ must contains only numbers");
 
         Cnpj = normalizedCnpj;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Cnpj;
     }
 }
