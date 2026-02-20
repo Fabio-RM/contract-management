@@ -1,4 +1,4 @@
-namespace Api.Core.ValueObjects;
+namespace Core.ValueObjects;
 
 public record ClientName
 {
@@ -9,10 +9,10 @@ public record ClientName
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name cannot be empty", nameof(name));
-        
+
         if (name.Length > MaxLength)
             throw new ArgumentException($"Name cannot be longer than {MaxLength} characters", nameof(name));
-        
+
         Name = name;
     }
 }

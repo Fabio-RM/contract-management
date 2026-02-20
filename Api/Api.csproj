@@ -7,12 +7,34 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Clients\Interfaces\" />
-    <Folder Include="Application\Clients\Queries\" />
+    <PackageReference Include="MediatR" Version="14.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="14.0.0" />
+    <_ContentIncludedByDefault Remove="Core.old\obj\Core.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Core.old\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Core.old\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="Core\obj\Core.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Core\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Core2\obj\Core2.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Core2\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Core2\obj\project.packagespec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Core\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Core\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Core\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Core\**" />
   </ItemGroup>
 
 </Project>
