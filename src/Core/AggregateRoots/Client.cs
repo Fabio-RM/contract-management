@@ -52,4 +52,9 @@ public class Client
         if (Status == ClientStatus.Active) throw new ClientActiveException();
         Status = ClientStatus.Active;
     }
+
+    public bool IsActive()
+    {
+        return Status == ClientStatus.Active;
+    }
 }
