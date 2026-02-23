@@ -9,13 +9,15 @@ public class ClientName : ValueObject
 
     public ClientName(string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name cannot be empty", nameof(name));
+        string normalizedName = name.Trim();
+        
+        if (string.IsNullOrWhiteSpace(normalizedName))
+            throw new ArgumentException("Name cannot be empty", nameof(normalizedName));
 
-        if (name.Length > MaxLength)
-            throw new ArgumentException($"Name cannot be longer than {MaxLength} characters", nameof(name));
+        if (normalizedName.Length > MaxLength)
+            throw new ArgumentException($"Name cannot be longer than {MaxLength} characters", nameof(normalizedName));
 
-        Name = name;
+        Name = normalizedName;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

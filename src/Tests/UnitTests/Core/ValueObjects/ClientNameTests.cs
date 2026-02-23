@@ -29,7 +29,7 @@ public class ClientNameTests
     public void Two_equal_names_should_be_equal()
     {
         var name1 = new ClientName("John Doe");
-        var name2 = new ClientName("John Doe");
+        var name2 = new ClientName("   John Doe    ");
         
         name1.Equals(name2).Should().BeTrue();
     }
