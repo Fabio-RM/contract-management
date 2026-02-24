@@ -1,5 +1,6 @@
 namespace Application.Clients.Queries.Models;
 
+// Used to avoid queries dependency from Domain/Core Aggregate Root
 public class ClientReadModel
 {
     public Guid Id { get; set; } 
