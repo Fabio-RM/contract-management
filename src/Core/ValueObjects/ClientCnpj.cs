@@ -7,7 +7,7 @@ public class ClientCnpj : ValueObject
 {
     private const int MaxLength = 14;
 
-    public string Cnpj { get; }
+    public string Value { get; }
 
     public ClientCnpj(string cnpj)
     {
@@ -22,11 +22,11 @@ public class ClientCnpj : ValueObject
         if (!normalizedCnpj.All(c => char.IsDigit(c)))
             throw new ArgumentException($"CNPJ must contains only numbers");
 
-        Cnpj = normalizedCnpj;
+        Value = normalizedCnpj;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return Cnpj;
+        yield return Value;
     }
 }

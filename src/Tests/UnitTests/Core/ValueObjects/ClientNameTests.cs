@@ -1,5 +1,7 @@
+using System;
 using Core.ValueObjects;
 using FluentAssertions;
+using Xunit;
 
 namespace Tests.UnitTests.Core.ValueObjects;
 
@@ -22,7 +24,7 @@ public class ClientNameTests
     {
         var name = new ClientName(validName);
         
-        name.Name.Should().Be(validName);
+        name.Value.Should().Be(validName);
     }
 
     [Fact]

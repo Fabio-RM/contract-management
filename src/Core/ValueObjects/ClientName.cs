@@ -5,7 +5,7 @@ namespace Core.ValueObjects;
 public class ClientName : ValueObject
 {
     private const int MaxLength = 255;
-    public string Name { get; }
+    public string Value { get; }
 
     public ClientName(string name)
     {
@@ -17,11 +17,11 @@ public class ClientName : ValueObject
         if (normalizedName.Length > MaxLength)
             throw new ArgumentException($"Name cannot be longer than {MaxLength} characters", nameof(normalizedName));
 
-        Name = normalizedName;
+        Value = normalizedName;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return Name;
+        yield return Value;
     }
 }

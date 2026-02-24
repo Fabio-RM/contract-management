@@ -1,3 +1,4 @@
+using System;
 using Core.ValueObjects;
 using FluentAssertions;
 using Xunit;
@@ -29,7 +30,7 @@ public class ClientCnpjTests
     {
         var cnpj = new ClientCnpj(validCnpj);
 
-        cnpj.Cnpj.Should().Be("12456789000112");
+        cnpj.Value.Should().Be("12456789000112");
     }
     
     [Fact]
