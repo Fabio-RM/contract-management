@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Application.Clients.Commands;
 using Application.Clients.Handlers;
 using Application.Clients.Exceptions;
@@ -6,6 +9,7 @@ using Core.AggregateRoots;
 using Core.ValueObjects;
 using FluentAssertions;
 using Moq;
+using Xunit;
 
 namespace Tests.UnitTests.Application.Clients;
 
