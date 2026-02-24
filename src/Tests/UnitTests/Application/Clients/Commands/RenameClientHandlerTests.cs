@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Application.Clients.Commands;
 using Application.Clients.Exceptions;
 using Application.Clients.Handlers;
-using Castle.Components.DictionaryAdapter.Xml;
 using Core.AggregateRoots;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
@@ -12,9 +11,8 @@ using FluentAssertions;
 using MediatR;
 using Moq;
 using Xunit;
-using Xunit.Abstractions;
 
-namespace Tests.UnitTests.Application.Clients;
+namespace Tests.UnitTests.Application.Clients.Commands;
 
 public class RenameClientHandlerTests
 {

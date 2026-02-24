@@ -16,10 +16,10 @@ public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, G
         _repository = repository;
     }
 
-    public async Task<Guid> Handle(CreateClientCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateClientCommand request, CancellationToken cancellationToken)
     {
-        ClientCnpj cnpj = new ClientCnpj(command.Cnpj);
-        ClientName name = new ClientName(command.Name);
+        ClientCnpj cnpj = new ClientCnpj(request.Cnpj);
+        ClientName name = new ClientName(request.Name);
 
         bool cnpjExists = await _repository.ExistsByCnpjAsync(cnpj, cancellationToken);
 

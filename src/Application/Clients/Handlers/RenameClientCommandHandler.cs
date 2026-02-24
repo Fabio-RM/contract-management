@@ -15,10 +15,10 @@ public class RenameClientCommandHandler : IRequestHandler<RenameClientCommand, U
         _repository = repository;
     }
 
-    public async Task<Unit> Handle(RenameClientCommand command, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(RenameClientCommand request, CancellationToken cancellationToken)
     {
-        ClientName newName = new ClientName(command.NewName);
-        var client = await _repository.GetByIdAsync(command.Id, cancellationToken);
+        ClientName newName = new ClientName(request.NewName);
+        var client = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
         if (client is null) throw new ClientNotFoundException();
 

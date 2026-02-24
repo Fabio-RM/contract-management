@@ -1,3 +1,3 @@
 namespace Application.Clients;
 
-public record ClientDto(Guid Id, string Name, string Cnpj, bool IsActive);
+public record ClientDto(Guid Id, string Cnpj, string Name, string Status);

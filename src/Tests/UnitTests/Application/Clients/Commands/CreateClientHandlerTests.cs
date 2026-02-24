@@ -2,16 +2,16 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Clients.Commands;
-using Application.Clients.Handlers;
 using Application.Clients.Exceptions;
-using Core.Interfaces.Repositories;
+using Application.Clients.Handlers;
 using Core.AggregateRoots;
+using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace Tests.UnitTests.Application.Clients;
+namespace Tests.UnitTests.Application.Clients.Commands;
 
 public class CreateClientHandlerTests
 {

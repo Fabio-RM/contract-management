@@ -57,4 +57,9 @@ public class Client
     {
         return Status == ClientStatus.Active;
     }
+    
+    public string GetStatus()
+    {
+        return Status.ToString();
+    }
 }
