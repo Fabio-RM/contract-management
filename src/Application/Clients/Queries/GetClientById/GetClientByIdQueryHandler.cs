@@ -1,9 +1,9 @@
+using Application.Clients.DTOs;
 using Application.Clients.Exceptions;
-using Application.Clients.Interfaces;
-using Application.Clients.Queries;
+using Application.Clients.Interfaces.Repositories;
 using MediatR;
 
-namespace Application.Clients.Handlers;
+namespace Application.Clients.Queries.GetClientById;
 
 public class GetClientByIdQueryHandler : IRequestHandler<GetClientByIdQuery, ClientDto>
 {

@@ -1,6 +1,6 @@
 using Application.Clients.Queries.Models;
 
-namespace Application.Clients.Interfaces;
+namespace Application.Clients.Interfaces.Repositories;
 
 public interface IClientQueryRepository
 {

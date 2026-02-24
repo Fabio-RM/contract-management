@@ -1,10 +1,9 @@
-using Application.Clients.Commands;
 using Application.Clients.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using MediatR;
 
-namespace Application.Clients.Handlers;
+namespace Application.Clients.Commands.RenameClient;
 
 public class RenameClientCommandHandler : IRequestHandler<RenameClientCommand, Unit>
 {

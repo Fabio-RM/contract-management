@@ -1,11 +1,10 @@
-using Application.Clients.Commands;
 using Application.Clients.Exceptions;
 using Core.AggregateRoots;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using MediatR;
 
-namespace Application.Clients.Handlers;
+namespace Application.Clients.Commands.CreateClient;
 
 public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, Guid>
 {
