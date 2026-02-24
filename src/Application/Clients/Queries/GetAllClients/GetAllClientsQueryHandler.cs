@@ -16,6 +16,6 @@ public class GetAllClientsQueryHandler : IRequestHandler<GetAllClientsQuery, Pag
     
     public async Task<PagedResults<ClientDto>> Handle(GetAllClientsQuery request, CancellationToken cancellationToken)
     {
-        return await _repository.GetAllClientsAsync(cancellationToken);
+        return await _repository.GetAllClientsAsync(request, cancellationToken);
     }
 }
