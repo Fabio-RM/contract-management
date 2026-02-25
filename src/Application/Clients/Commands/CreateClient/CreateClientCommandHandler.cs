@@ -26,6 +26,7 @@ public class CreateClientCommandHandler : IRequestHandler<CreateClientCommand, G
 
         var client = Client.Create(cnpj, name);
         await _repository.AddAsync(client, cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
 
         return client.Id;
     }
