@@ -1,18 +1,15 @@
-using Application.Clients.Commands.DeactivateClient;
+using Application.Clients.Commands;
 using Application.Clients.Exceptions;
-using Application.Common;
 using Application.Common.Interfaces;
 using Core.AggregateRoots;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using FluentAssertions;
-using MediatR;
 using Moq;
-using Xunit.Abstractions;
 
 namespace Tests.UnitTests.Application.Clients.Commands;
 
-public class DeactivateClientHandlerTests
+public class DeactivateClientTests
 {
     [Fact]
     public async Task Should_deactivate_client_if_it_exists()
@@ -35,8 +32,8 @@ public class DeactivateClientHandlerTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(client);
         
-        var handler = new DeactivateClientCommandHandler(repositoryMock.Object, dateTimeMock.Object);
-        var command = new DeactivateClientCommand(client.Id);
+        var handler = new DeactivateClient.Handler(repositoryMock.Object, dateTimeMock.Object);
+        var command = new DeactivateClient.Command(client.Id);
         
         await handler.Handle(command, CancellationToken.None);
         
@@ -60,8 +57,8 @@ public class DeactivateClientHandlerTests
         
         dateTimeMock.Setup(d => d.UtcNow).Returns(fixedDate);
         
-        var handler = new DeactivateClientCommandHandler(repositoryMock.Object, dateTimeMock.Object);
-        var command = new DeactivateClientCommand(Guid.NewGuid());
+        var handler = new DeactivateClient.Handler(repositoryMock.Object, dateTimeMock.Object);
+        var command = new DeactivateClient.Command(Guid.NewGuid());
         
         Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
 

@@ -1,8 +1,4 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Application.Clients.Commands;
-using Application.Clients.Commands.RenameClient;
 using Application.Clients.Exceptions;
 using Core.AggregateRoots;
 using Core.Interfaces.Repositories;
@@ -10,11 +6,10 @@ using Core.ValueObjects;
 using FluentAssertions;
 using MediatR;
 using Moq;
-using Xunit;
 
 namespace Tests.UnitTests.Application.Clients.Commands;
 
-public class RenameClientHandlerTests
+public class RenameClientTests
 {
     [Fact]
     public async Task Should_rename_client_and_save_changes()
@@ -33,10 +28,10 @@ public class RenameClientHandlerTests
         repositoryMock.Setup(repo => repo.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         
-        var handler = new RenameClientCommandHandler(repositoryMock.Object);
+        var handler = new RenameClient.Handler(repositoryMock.Object);
         
-        var command = new RenameClientCommand(
-            Id: client.Id, 
+        var command = new RenameClient.Command(
+            ClientId: client.Id, 
             NewName: "New Name");
         
         var result = await handler.Handle(command, CancellationToken.None);
@@ -58,10 +53,10 @@ public class RenameClientHandlerTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(default(Client));
         
-        var handler = new RenameClientCommandHandler(repositoryMock.Object);
+        var handler = new RenameClient.Handler(repositoryMock.Object);
         
-        var command = new RenameClientCommand(
-            Id: Guid.NewGuid(),
+        var command = new RenameClient.Command(
+            ClientId: Guid.NewGuid(),
             NewName: "New Name");
         
         Func<Task> act = async () =>  await handler.Handle(command, CancellationToken.None);

@@ -1,19 +1,14 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Application.Clients.Commands;
-using Application.Clients.Commands.CreateClient;
 using Application.Clients.Exceptions;
 using Core.AggregateRoots;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using FluentAssertions;
 using Moq;
-using Xunit;
 
 namespace Tests.UnitTests.Application.Clients.Commands;
 
-public class CreateClientHandlerTests
+public class CreateClientTests
 {
     [Fact]
     public async Task Should_create_client_and_add_to_repository()
@@ -26,9 +21,9 @@ public class CreateClientHandlerTests
                 It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         
-        var handler = new CreateClientCommandHandler(repositoryMock.Object);
+        var handler = new CreateClient.Handler(repositoryMock.Object);
 
-        var command = new CreateClientCommand(
+        var command = new CreateClient.Command(
             Cnpj: "12.123.123/0001-12",
             Name: "John Doe"
         );
@@ -54,9 +49,9 @@ public class CreateClientHandlerTests
                 It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         
-        var handler = new CreateClientCommandHandler(repositoryMock.Object);
+        var handler = new CreateClient.Handler(repositoryMock.Object);
 
-        var command = new CreateClientCommand(
+        var command = new CreateClient.Command(
             Cnpj: "INVALID",
             Name: "John Doe");
         
@@ -81,9 +76,9 @@ public class CreateClientHandlerTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         
-        var handler = new CreateClientCommandHandler(repositoryMock.Object);
+        var handler = new CreateClient.Handler(repositoryMock.Object);
 
-        var command = new CreateClientCommand(
+        var command = new CreateClient.Command(
             Cnpj: "12.123.123/0001-12",
             Name: "John Doe"
         );
