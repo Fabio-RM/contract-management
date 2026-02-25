@@ -1,4 +1,5 @@
 using Core.Exceptions;
+using Core.Interfaces;
 using Core.ValueObjects;
 
 namespace Core.AggregateRoots;
@@ -15,6 +16,7 @@ public class Client
     public ClientCnpj Cnpj { get; private set; }
     public ClientName Name { get; private set; }
     private ClientStatus Status { get; set; }
+    public DateTime? DeletedAt { get; private set; }
 
     private Client(ClientCnpj cnpj, ClientName name)
     {
@@ -25,6 +27,7 @@ public class Client
         Cnpj = cnpj;
         Name = name;
         Status = ClientStatus.Active;
+        DeletedAt = null;
     }
 
     // Factory Method
@@ -41,16 +44,18 @@ public class Client
         Name = name;
     }
 
-    public void Deactivate()
+    public void Deactivate(DateTime utcNow)
     {
         if (Status == ClientStatus.Inactive) throw new ClientInactiveException();
         Status = ClientStatus.Inactive;
+        DeletedAt = utcNow;
     }
 
     public void Activate()
     {
         if (Status == ClientStatus.Active) throw new ClientActiveException();
         Status = ClientStatus.Active;
+        DeletedAt = null;
     }
 
     public bool IsActive()

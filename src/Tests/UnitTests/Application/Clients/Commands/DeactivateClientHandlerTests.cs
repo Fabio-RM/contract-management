@@ -12,13 +12,6 @@ namespace Tests.UnitTests.Application.Clients.Commands;
 
 public class DeleteClientHandlerTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public DeleteClientHandlerTests(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-    }
-
     [Fact]
     public async Task Should_delete_client_if_it_exists()
     {
