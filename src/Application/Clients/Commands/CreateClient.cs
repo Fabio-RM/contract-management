@@ -30,7 +30,6 @@ public static class CreateClient
 
             var client = Client.Create(cnpj, name);
             await _repository.AddAsync(client, cancellationToken);
-            await _repository.SaveChangesAsync(cancellationToken);
 
             return client.Id;
         }

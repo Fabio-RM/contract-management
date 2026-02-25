@@ -15,6 +15,7 @@ public class DeactivateClientTests
     public async Task Should_deactivate_client_if_it_exists()
     {
         var repositoryMock = new Mock<IClientRepository>();
+        var uowMock = new Mock<IUnitOfWork>();
         
         var dateTimeMock = new Mock<IDateTimeProvider>();
         var fixedDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -39,8 +40,6 @@ public class DeactivateClientTests
         
         client.IsActive().Should().BeFalse();
         client.DeletedAt.Should().Be(fixedDate);
-        
-        repositoryMock.Verify(repo => repo.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -63,7 +62,5 @@ public class DeactivateClientTests
         Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
 
         await act.Should().ThrowAsync<ClientNotFoundException>();
-        
-        repositoryMock.Verify(repo => repo.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

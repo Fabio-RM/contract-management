@@ -24,7 +24,6 @@ public static class ActivateClient
             if (client is null) throw new ClientNotFoundException();
         
             client.Activate();
-            await _repository.SaveChangesAsync(cancellationToken);
         
             return Unit.Value;
         }

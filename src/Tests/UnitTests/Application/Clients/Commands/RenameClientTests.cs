@@ -15,6 +15,7 @@ public class RenameClientTests
     public async Task Should_rename_client_and_save_changes()
     {
         var repositoryMock = new Mock<IClientRepository>();
+        
         Client client = Client.Create(
             new ClientCnpj("12.123.456/0001-12"),
             new ClientName("John Doe")
@@ -24,9 +25,6 @@ public class RenameClientTests
             client.Id, 
             It.IsAny<CancellationToken>()))
             .ReturnsAsync(client);
-        
-        repositoryMock.Setup(repo => repo.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .Returns(Task.CompletedTask);
         
         var handler = new RenameClient.Handler(repositoryMock.Object);
         
@@ -38,8 +36,6 @@ public class RenameClientTests
         
         result.Should().Be(Unit.Value);
         client.Name.Value.Should().Be("New Name");
-        
-        repositoryMock.Verify(repo => repo.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -62,7 +58,5 @@ public class RenameClientTests
         Func<Task> act = async () =>  await handler.Handle(command, CancellationToken.None);
 
         await act.Should().ThrowAsync<ClientNotFoundException>();
-        
-        repositoryMock.Verify(repo => repo.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 }

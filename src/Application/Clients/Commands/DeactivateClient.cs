@@ -28,7 +28,6 @@ public static class DeactivateClient
             if (client is null) throw new ClientNotFoundException();
         
             client.Deactivate(_dateTimeProvider.UtcNow);
-            await _repository.SaveChangesAsync(cancellationToken);
         
             return Unit.Value;
         }

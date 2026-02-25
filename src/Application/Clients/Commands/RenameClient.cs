@@ -25,7 +25,6 @@ public static class RenameClient
             if (client is null) throw new ClientNotFoundException();
 
             client.Rename(newName);
-            await _repository.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
