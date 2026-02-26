@@ -4,7 +4,7 @@ using Core.ValueObjects;
 
 namespace Tests.UnitTests.Application;
 
-public class FakeClientsWriteRepository : IClientRepository
+public class FakeClientsWriteWriteRepository : IClientWriteRepository
 {
     private readonly List<Client> _clients = new();
     

@@ -1,7 +1,7 @@
+using Application.Clients.DTOs;
 using Application.Clients.Exceptions;
 using Application.Clients.Interfaces.Repositories;
-using Application.Clients.Queries.GetClientById;
-using Application.Clients.Queries.Models;
+using Application.Clients.Queries;
 using FluentAssertions;
 using Moq;
 
@@ -9,48 +9,46 @@ namespace Tests.UnitTests.Application.Clients.Queries;
 
 public class GetClientByIdTests
 {
+    private ClientDto[] _clientsDtoToAdd =
+    {
+        new ClientDto(
+            Id: Guid.Parse("11111111-1111-1111-1111-111111111111"),
+            Cnpj: "11.111.111/0001-11",
+            Name: "John Doe",
+            Status: "Active"), 
+        new ClientDto(
+            Id: Guid.Parse("22222222-2222-2222-2222-222222222222"),
+            Cnpj: "22.222.222/0001-22",
+            Name: "Anna Doe",
+            Status: "Active")
+    };
+    
     [Fact]
     public async Task Should_return_client_dto_when_client_exists()
     {
-        var repositoryMock = new Mock<IClientQueryRepository>();
+        var repository = new FakeClientsQueryRepository(_clientsDtoToAdd);
 
-        var readModel = new ClientReadModel
-        {
-            Id = Guid.NewGuid(),
-            Cnpj = "12.123.456-12",
-            Name = "John Doe",
-            Status = "Active"
-        };
-
-        repositoryMock
-            .Setup(repo => repo.GetByIdAsync(readModel.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(readModel);
+        var clientDto = _clientsDtoToAdd[0];
         
-        var handler = new GetClientByIdQueryHandler(repositoryMock.Object);
-        var query = new GetClientByIdQuery(readModel.Id);
+        var handler = new GetClientById.Handler(repository);
+        var query = new GetClientById.Query(clientDto.Id);
         
         var client = await handler.Handle(query, CancellationToken.None);
         
         client.Should().NotBeNull();
-        client.Id.Should().Be(readModel.Id);
-        client.Cnpj.Should().Be(readModel.Cnpj);
-        client.Name.Should().Be(readModel.Name);
-        client.Status.Should().Be(readModel.Status);
-        
-        repositoryMock.Verify(repo => repo.GetByIdAsync(readModel.Id, It.IsAny<CancellationToken>()), Times.Once);
+        client.Id.Should().Be(clientDto.Id);
+        client.Cnpj.Should().Be(clientDto.Cnpj);
+        client.Name.Should().Be(clientDto.Name);
+        client.Status.Should().Be(clientDto.Status);
     }
 
     [Fact]
     public async Task Should_throw_exception_when_client_not_found()
     {
-        var repositoryMock = new Mock<IClientQueryRepository>();
+        var repository = new FakeClientsQueryRepository(_clientsDtoToAdd);
         
-        repositoryMock
-            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((ClientReadModel?)null);
-        
-        var handler = new GetClientByIdQueryHandler(repositoryMock.Object);
-        var query = new GetClientByIdQuery(Guid.NewGuid());
+        var handler = new GetClientById.Handler(repository);
+        var query = new GetClientById.Query(Guid.NewGuid());
         
         Func<Task> act = async () => await handler.Handle(query, CancellationToken.None);
 

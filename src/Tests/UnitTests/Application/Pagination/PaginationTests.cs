@@ -1,4 +1,4 @@
-using Application.Clients.Queries.GetAllClients;
+using Application.Clients.Queries;
 using Application.Common;
 using FluentAssertions;
 
@@ -9,7 +9,7 @@ public class PaginationTests
     [Fact]
     public void Should_limit_page_size_to_max()
     {
-        var query = new GetAllClientsQuery
+        var query = new GetAllClients.Query
         {
             PageSize = 9999
         };
@@ -20,7 +20,7 @@ public class PaginationTests
     [Fact]
     public void Should_calculate_skip_correctly()
     {
-        var query = new GetAllClientsQuery
+        var query = new GetAllClients.Query
         {
             CurrentPage = 3,
             PageSize = 10

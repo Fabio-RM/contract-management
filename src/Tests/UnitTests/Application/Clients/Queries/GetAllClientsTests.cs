@@ -1,7 +1,6 @@
 using Application.Clients.DTOs;
 using Application.Clients.Interfaces.Repositories;
-using Application.Clients.Queries.GetAllClients;
-using Application.Common;
+using Application.Clients.Queries;
 using Application.Common.Pagination;
 using FluentAssertions;
 using Moq;
@@ -10,75 +9,60 @@ namespace Tests.UnitTests.Application.Clients.Queries;
 
 public class GetAllClientsTests
 {
+    private ClientDto[] _clientsDtoToAdd =
+    {
+        new ClientDto(
+            Id: Guid.Parse("11111111-1111-1111-1111-111111111111"),
+            Cnpj: "11.111.111/0001-11",
+            Name: "John Doe",
+            Status: "Active"), 
+        new ClientDto(
+            Id: Guid.Parse("22222222-2222-2222-2222-222222222222"),
+            Cnpj: "22.222.222/0001-22",
+            Name: "Anna Doe",
+            Status: "Active")
+    };
+
     [Fact]
     public async Task Should_return_all_clients_list()
     {
-        var repositoryMock = new Mock<IClientQueryRepository>();
-
-        var pagedResults = new PagedResults<ClientDto>(
-            items: new List<ClientDto>{
-                new ClientDto(
-                    Id: Guid.NewGuid(),
-                    Cnpj: "12.456.789/0001-12",
-                    Name: "John Doe",
-                    Status: "Active")
-                },
-            totalCount: 1,
+        var repository = new FakeClientsQueryRepository(_clientsDtoToAdd);
+        
+        var expectedResults = new PagedResults<ClientDto>(
+            items: new List<ClientDto>{_clientsDtoToAdd[0], _clientsDtoToAdd[1]},
+            totalCount: 2,
             currentPage: 1,
             pageSize: 10
         );
         
-        repositoryMock
-            .Setup(repo => repo.GetAllClientsAsync(
-                It.IsAny<GetAllClientsQuery>(),
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(pagedResults);
-        
-        var handler = new GetAllClientsQueryHandler(repositoryMock.Object);
-        var query = new GetAllClientsQuery();
+        var handler = new GetAllClients.Handler(repository);
+        var query = new GetAllClients.Query();
         
         var result = await handler.Handle(query, CancellationToken.None);
         
-        result.Should().BeEquivalentTo(pagedResults);
-        
-        repositoryMock.Verify(repo => repo.GetAllClientsAsync(
-            query,
-            It.IsAny<CancellationToken>()), Times.Once);
+        result.Should().BeEquivalentTo(expectedResults);
     }
 
     [Fact]
     public async Task Should_return_all_clients_with_filters()
     {
-        var repositoryMock = new Mock<IClientQueryRepository>();
+        var repository = new FakeClientsQueryRepository(_clientsDtoToAdd);
         
-        var pagedResults = new PagedResults<ClientDto>(
-            items: new List<ClientDto>
-            {
-                new ClientDto(
-                    Id: Guid.NewGuid(),
-                    Cnpj: "11.111.111/0001-11",
-                    Name: "John Doe",
-                    Status: "Active")
-            },
+        var expectedResults = new PagedResults<ClientDto>(
+            items: new List<ClientDto>{_clientsDtoToAdd[0]},
             totalCount: 1,
             currentPage: 1,
             pageSize: 10
         );
         
-        repositoryMock
-            .Setup(repo => repo.GetAllClientsAsync(
-                It.IsAny<GetAllClientsQuery>(),
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(pagedResults);
-        
-        var handler = new GetAllClientsQueryHandler(repositoryMock.Object);
-        var query = new GetAllClientsQuery
+        var handler = new GetAllClients.Handler(repository);
+        var query = new GetAllClients.Query
         {
             CnpjFilter = "11.111.111/0001-11",
         };
         
         var result = await handler.Handle(query, CancellationToken.None);
         
-        result.Should().BeEquivalentTo(pagedResults);
+        result.Should().BeEquivalentTo(expectedResults);
     }
 }

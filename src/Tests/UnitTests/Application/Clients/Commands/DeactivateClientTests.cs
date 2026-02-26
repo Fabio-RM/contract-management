@@ -2,7 +2,6 @@ using Application.Clients.Commands;
 using Application.Clients.Exceptions;
 using Application.Common.Interfaces;
 using Core.AggregateRoots;
-using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using FluentAssertions;
 using Moq;
@@ -14,8 +13,7 @@ public class DeactivateClientTests
     [Fact]
     public async Task Should_deactivate_client_if_it_exists()
     {
-        var repositoryMock = new Mock<IClientRepository>();
-        var uowMock = new Mock<IUnitOfWork>();
+        var repository = new FakeClientsWriteWriteRepository();
         
         var dateTimeMock = new Mock<IDateTimeProvider>();
         var fixedDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -26,14 +24,10 @@ public class DeactivateClientTests
             );
         
         dateTimeMock.Setup(d => d.UtcNow).Returns(fixedDate);
+
+        await repository.AddAsync(client, CancellationToken.None);
         
-        repositoryMock
-            .Setup(repo => repo.GetByIdAsync(
-                It.Is<Guid>(id => id == client.Id), 
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(client);
-        
-        var handler = new DeactivateClient.Handler(repositoryMock.Object, dateTimeMock.Object);
+        var handler = new DeactivateClient.Handler(repository, dateTimeMock.Object);
         var command = new DeactivateClient.Command(client.Id);
         
         await handler.Handle(command, CancellationToken.None);
@@ -45,18 +39,14 @@ public class DeactivateClientTests
     [Fact]
     public async Task Should_throw_exception_if_client_does_not_exist()
     {
-        var repositoryMock = new Mock<IClientRepository>();
+        var repository = new FakeClientsWriteWriteRepository();
         
         var dateTimeMock = new Mock<IDateTimeProvider>();
         var fixedDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         
-        repositoryMock
-            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Client?)null);
-        
         dateTimeMock.Setup(d => d.UtcNow).Returns(fixedDate);
         
-        var handler = new DeactivateClient.Handler(repositoryMock.Object, dateTimeMock.Object);
+        var handler = new DeactivateClient.Handler(repository, dateTimeMock.Object);
         var command = new DeactivateClient.Command(Guid.NewGuid());
         
         Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
