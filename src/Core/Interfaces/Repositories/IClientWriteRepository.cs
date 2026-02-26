@@ -3,7 +3,7 @@ using Core.ValueObjects;
 
 namespace Core.Interfaces.Repositories;
 
-public interface IClientRepository
+public interface IClientWriteRepository
 {
     public Task<Client?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     public Task AddAsync(Client client, CancellationToken cancellationToken);
