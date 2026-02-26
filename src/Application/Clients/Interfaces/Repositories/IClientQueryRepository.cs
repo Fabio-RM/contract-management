@@ -1,12 +1,11 @@
 using Application.Clients.DTOs;
-using Application.Clients.Queries.GetAllClients;
-using Application.Clients.Queries.Models;
+using Application.Clients.Queries;
 using Application.Common.Pagination;
 
 namespace Application.Clients.Interfaces.Repositories;
 
 public interface IClientQueryRepository
 {
-    Task<PagedResults<ClientDto>> GetAllClientsAsync(GetAllClientsQuery query, CancellationToken cancellationToken);
-    Task<ClientReadModel?> GetByIdAsync(Guid clientId, CancellationToken cancellationToken);
+    public Task<PagedResults<ClientDto>> GetAllClientsAsync(GetAllClients.Query query, CancellationToken cancellationToken);
+    public Task<ClientDto?> GetByIdAsync(Guid clientId, CancellationToken cancellationToken);
 }

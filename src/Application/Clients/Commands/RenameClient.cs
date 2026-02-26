@@ -10,9 +10,9 @@ public static class RenameClient
     public record Command(Guid ClientId, string NewName) : IRequest<Unit>;
     public class Handler : IRequestHandler<Command, Unit>
     {
-        private readonly IClientRepository _repository;
+        private readonly IClientWriteRepository _repository;
 
-        public Handler(IClientRepository repository)
+        public Handler(IClientWriteRepository repository)
         {
             _repository = repository;
         }

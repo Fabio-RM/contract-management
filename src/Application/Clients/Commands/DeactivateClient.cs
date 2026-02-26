@@ -10,12 +10,12 @@ public static class DeactivateClient
     public record Command(Guid ClientId) : IRequest<Unit>;
     public class Handler : IRequestHandler<Command, Unit>
     {
-        private readonly IClientRepository _repository;
+        private readonly IClientWriteRepository _repository;
         private readonly IDateTimeProvider _dateTimeProvider;
     
         public DateTime UtcNow => DateTime.Now;
     
-        public Handler(IClientRepository repository, IDateTimeProvider dateTimeProvider)
+        public Handler(IClientWriteRepository repository, IDateTimeProvider dateTimeProvider)
         {
             _repository = repository;
             _dateTimeProvider = dateTimeProvider;

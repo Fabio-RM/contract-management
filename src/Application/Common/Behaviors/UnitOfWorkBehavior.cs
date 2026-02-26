@@ -1,10 +1,11 @@
 using Application.Common.Interfaces;
 using MediatR;
 
-namespace Application.Common.Behaviours;
+namespace Application.Common.Behaviors;
 
 public class UnitOfWorkBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
 

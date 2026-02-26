@@ -12,9 +12,9 @@ public static class CreateClient
     
     public class Handler : IRequestHandler<Command, Guid>
     {
-        private readonly IClientRepository _repository;
+        private readonly IClientWriteRepository _repository;
 
-        public Handler(IClientRepository repository)
+        public Handler(IClientWriteRepository repository)
         {
             _repository = repository;
         }
