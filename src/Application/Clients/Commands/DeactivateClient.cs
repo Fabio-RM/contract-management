@@ -7,7 +7,7 @@ namespace Application.Clients.Commands;
 
 public static class DeactivateClient
 {
-    public record Command(Guid ClientId) : IRequest<Unit>;
+    public record Command(Guid ClientId) : ICommand<Unit>;
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IClientWriteRepository _repository;

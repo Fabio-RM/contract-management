@@ -1,4 +1,5 @@
 using Application.Clients.Exceptions;
+using Application.Common.Interfaces;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using MediatR;
@@ -7,7 +8,7 @@ namespace Application.Clients.Commands;
 
 public static class RenameClient
 {
-    public record Command(Guid ClientId, string NewName) : IRequest<Unit>;
+    public record Command(Guid ClientId, string NewName) : ICommand<Unit>;
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IClientWriteRepository _repository;

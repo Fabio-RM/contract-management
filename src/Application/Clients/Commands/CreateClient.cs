@@ -1,4 +1,5 @@
 using Application.Clients.Exceptions;
+using Application.Common.Interfaces;
 using Core.AggregateRoots;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
@@ -8,7 +9,7 @@ namespace Application.Clients.Commands;
 
 public static class CreateClient
 {
-    public record Command(string Cnpj, string Name) : IRequest<Guid>;
+    public record Command(string Cnpj, string Name) : ICommand<Guid>;
     
     public class Handler : IRequestHandler<Command, Guid>
     {

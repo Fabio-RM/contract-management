@@ -1,13 +1,14 @@
 using Application.Clients.DTOs;
 using Application.Clients.Exceptions;
 using Application.Clients.Interfaces.Repositories;
+using Application.Common.Interfaces;
 using MediatR;
 
 namespace Application.Clients.Queries;
 
 public static class GetClientById
 {
-    public record Query(Guid ClientId) : IRequest<ClientDto>
+    public record Query(Guid ClientId) : IQuery<ClientDto>
     {
         public Guid ClientId { get; } = ClientId;
     }

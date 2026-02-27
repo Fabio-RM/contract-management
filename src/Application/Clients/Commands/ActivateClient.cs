@@ -1,4 +1,5 @@
 using Application.Clients.Exceptions;
+using Application.Common.Interfaces;
 using Core.Interfaces.Repositories;
 using MediatR;
 
@@ -6,7 +7,7 @@ namespace Application.Clients.Commands;
 
 public static class ActivateClient
 {
-    public record Command(Guid ClientId) : IRequest<Unit>;
+    public record Command(Guid ClientId) : ICommand<Unit>;
     
     public class Handler : IRequestHandler<Command, Unit>
     {
