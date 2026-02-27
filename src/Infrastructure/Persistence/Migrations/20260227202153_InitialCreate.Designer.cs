@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260227202153_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,24 +31,21 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp");
+
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp")
-                        .HasColumnName("deleted_at");
+                        .HasColumnType("timestamp");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
+                        .HasColumnType("integer");
 
-                    b.Property<DateTime>("created_at")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp");
 
-                    b.Property<DateTime?>("updated_at")
-                        .HasColumnType("timestamp");
+                    b.HasKey("Id");
 
-                    b.HasKey("Id")
-                        .HasName("client_id");
-
-                    b.ToTable("clients", (string)null);
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("Core.AggregateRoots.Client", b =>
@@ -59,14 +59,14 @@ namespace Infrastructure.Persistence.Migrations
                                 .IsRequired()
                                 .HasMaxLength(14)
                                 .HasColumnType("varchar(14)")
-                                .HasColumnName("cnpj");
+                                .HasColumnName("Cnpj");
 
                             b1.HasKey("ClientId");
 
                             b1.HasIndex("Value")
                                 .IsUnique();
 
-                            b1.ToTable("clients");
+                            b1.ToTable("Clients");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClientId");
@@ -81,11 +81,11 @@ namespace Infrastructure.Persistence.Migrations
                                 .IsRequired()
                                 .HasMaxLength(255)
                                 .HasColumnType("varchar(255)")
-                                .HasColumnName("name");
+                                .HasColumnName("Name");
 
                             b1.HasKey("ClientId");
 
-                            b1.ToTable("clients");
+                            b1.ToTable("Clients");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClientId");
