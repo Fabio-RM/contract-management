@@ -1,3 +1,4 @@
+using Core.Enumerations;
 using Core.Exceptions;
 using Core.ValueObjects;
 
@@ -11,6 +12,8 @@ public class Client
     public ClientStatus Status { get; private set; }
     public DateTime? DeletedAt { get; private set; }
 
+    // To be used be EF Core
+    private Client() { }
     private Client(ClientCnpj cnpj, ClientName name)
     {
         ArgumentNullException.ThrowIfNull(cnpj);

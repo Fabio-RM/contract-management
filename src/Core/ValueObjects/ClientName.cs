@@ -7,9 +7,9 @@ public class ClientName : ValueObject
     private const int MaxLength = 255;
     public string Value { get; }
 
-    public ClientName(string name)
+    public ClientName(string value)
     {
-        string normalizedName = name.Trim();
+        string normalizedName = value.Trim();
         
         if (string.IsNullOrWhiteSpace(normalizedName))
             throw new ArgumentException("Name cannot be empty", nameof(normalizedName));

@@ -1,6 +1,6 @@
 using Core.Common;
 
-namespace Core.AggregateRoots;
+namespace Core.Enumerations;
 
 public class ClientStatus : Enumeration
 {

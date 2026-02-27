@@ -9,9 +9,9 @@ public class ClientCnpj : ValueObject
 
     public string Value { get; }
 
-    public ClientCnpj(string cnpj)
+    public ClientCnpj(string value)
     {
-        string normalizedCnpj = Regex.Replace(cnpj, @"[./-]", "").Trim();
+        string normalizedCnpj = Regex.Replace(value, @"[./-]", "").Trim();
 
         if (string.IsNullOrWhiteSpace(normalizedCnpj))
             throw new ArgumentException("CNPJ value cannot be null or empty.", nameof(normalizedCnpj));
