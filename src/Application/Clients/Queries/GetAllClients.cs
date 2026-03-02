@@ -14,6 +14,7 @@ public static class GetAllClients
         public string? NameFilter { get; init; } = string.Empty;
         public string? StatusFilter { get; init; } = string.Empty;
         public string? OrderBy { get; init; } = string.Empty;
+        public bool? Descending { get; init; } = false;
     }
     
     public class Handler : IRequestHandler<Query, PagedResults<ClientDto>>
