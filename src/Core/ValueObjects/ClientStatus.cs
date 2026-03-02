@@ -1,13 +1,13 @@
 using Core.Common;
 
-namespace Core.Enumerations;
+namespace Core.ValueObjects;
 
-public class ClientStatus : Enumeration
+public sealed class ClientStatus : Enumeration
 {
     public static readonly ClientStatus Active = new ClientStatus(1, nameof(Active));
     public static readonly ClientStatus Inactive = new ClientStatus(2, nameof(Inactive));
     
-    public ClientStatus(int id, string name) : base(id, name)
+    private ClientStatus(int id, string displayName) : base(id, displayName)
     {
     }
 }
