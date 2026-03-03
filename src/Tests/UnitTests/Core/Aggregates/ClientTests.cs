@@ -1,9 +1,7 @@
-using Application.Common.Interfaces;
 using Core.AggregateRoots;
 using Core.Exceptions;
 using Core.ValueObjects;
 using FluentAssertions;
-using Moq;
 
 namespace Tests.UnitTests.Core.Aggregates;
 
