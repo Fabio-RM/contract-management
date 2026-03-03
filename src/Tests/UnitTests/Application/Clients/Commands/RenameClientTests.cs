@@ -12,7 +12,7 @@ public class RenameClientTests
     [Fact]
     public async Task Should_rename_client_and_save_changes()
     {
-        var repository = new FakeClientsWriteWriteRepository();
+        var repository = new FakeClientsWriteRepository();
         
         Client client = Client.Create(
             new ClientCnpj("12.123.456/0001-12"),
@@ -36,7 +36,7 @@ public class RenameClientTests
     [Fact]
     public async Task Should_throw_exception_if_client_not_found()
     {
-        var repository = new FakeClientsWriteWriteRepository();
+        var repository = new FakeClientsWriteRepository();
         
         var handler = new RenameClient.Handler(repository);
         

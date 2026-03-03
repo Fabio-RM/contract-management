@@ -9,7 +9,7 @@ public class CreateClientTests
     [Fact]
     public async Task Should_create_client_and_add_to_repository()
     {
-        var repository = new FakeClientsWriteWriteRepository();
+        var repository = new FakeClientsWriteRepository();
         
         var handler = new CreateClient.Handler(repository);
 
@@ -27,7 +27,7 @@ public class CreateClientTests
     [Fact]
     public async Task Should_throw_exception_when_cnpj_is_invalid()
     {
-        var repository = new FakeClientsWriteWriteRepository();
+        var repository = new FakeClientsWriteRepository();
         
         var handler = new CreateClient.Handler(repository);
 
@@ -43,7 +43,7 @@ public class CreateClientTests
     [Fact]
     public async Task Should_not_add_client_with_same_cnpj_to_repository()
     {
-        var repository = new FakeClientsWriteWriteRepository();
+        var repository = new FakeClientsWriteRepository();
         
         var handler = new CreateClient.Handler(repository);
 

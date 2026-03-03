@@ -13,7 +13,7 @@ public class DeactivateClientTests
     [Fact]
     public async Task Should_deactivate_client_if_it_exists()
     {
-        var repository = new FakeClientsWriteWriteRepository();
+        var repository = new FakeClientsWriteRepository();
         
         var dateTimeMock = new Mock<IDateTimeProvider>();
         var fixedDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -39,7 +39,7 @@ public class DeactivateClientTests
     [Fact]
     public async Task Should_throw_exception_if_client_does_not_exist()
     {
-        var repository = new FakeClientsWriteWriteRepository();
+        var repository = new FakeClientsWriteRepository();
         
         var dateTimeMock = new Mock<IDateTimeProvider>();
         var fixedDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
