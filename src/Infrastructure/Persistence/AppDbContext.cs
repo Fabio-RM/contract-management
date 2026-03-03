@@ -1,5 +1,4 @@
 using Core.AggregateRoots;
-using Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;

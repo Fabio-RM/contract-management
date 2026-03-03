@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260227202153_InitialCreate")]
+    [Migration("20260302234756_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -31,21 +31,24 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp");
-
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp")
+                        .HasColumnName("deleted_at");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime?>("updated_at")
+                        .HasColumnType("timestamp");
 
-                    b.ToTable("Clients", (string)null);
+                    b.HasKey("Id")
+                        .HasName("client_id");
+
+                    b.ToTable("clients", (string)null);
                 });
 
             modelBuilder.Entity("Core.AggregateRoots.Client", b =>
@@ -59,14 +62,14 @@ namespace Infrastructure.Persistence.Migrations
                                 .IsRequired()
                                 .HasMaxLength(14)
                                 .HasColumnType("varchar(14)")
-                                .HasColumnName("Cnpj");
+                                .HasColumnName("cnpj");
 
                             b1.HasKey("ClientId");
 
                             b1.HasIndex("Value")
                                 .IsUnique();
 
-                            b1.ToTable("Clients");
+                            b1.ToTable("clients");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClientId");
@@ -81,11 +84,11 @@ namespace Infrastructure.Persistence.Migrations
                                 .IsRequired()
                                 .HasMaxLength(255)
                                 .HasColumnType("varchar(255)")
-                                .HasColumnName("Name");
+                                .HasColumnName("name");
 
                             b1.HasKey("ClientId");
 
-                            b1.ToTable("Clients");
+                            b1.ToTable("clients");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClientId");

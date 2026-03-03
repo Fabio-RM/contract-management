@@ -12,26 +12,26 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Clients",
+                name: "clients",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Cnpj = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false),
-                    Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp", nullable: true)
+                    cnpj = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false),
+                    name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false),
+                    deleted_at = table.Column<DateTime>(type: "timestamp", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
+                    table.PrimaryKey("client_id", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clients_Cnpj",
-                table: "Clients",
-                column: "Cnpj",
+                name: "IX_clients_cnpj",
+                table: "clients",
+                column: "cnpj",
                 unique: true);
         }
 
@@ -39,7 +39,7 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Clients");
+                name: "clients");
         }
     }
 }

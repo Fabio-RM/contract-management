@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260227202328_CreateClientsTable")]
+    [Migration("20260302234819_CreateClientsTable")]
     partial class CreateClientsTable
     {
         /// <inheritdoc />

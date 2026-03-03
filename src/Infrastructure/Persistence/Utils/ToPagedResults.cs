@@ -1,6 +1,6 @@
 namespace Infrastructure.Persistence.Utils;
 
-public class ToPagedResults
+public static class ToPagedResults
 {
     
 }

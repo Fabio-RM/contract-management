@@ -1,5 +1,5 @@
 using Core.AggregateRoots;
-using Core.Enumerations;
+using Core.Common;
 using Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -38,8 +38,8 @@ public class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
         
         builder.Property(c => c.Status)
             .HasConversion(
-                v => v.Id,
-                v => (ClientStatus)Enum.Parse(typeof(ClientStatus), v.ToString()))
+                status => status.Id,
+                id => Enumeration.FromId<ClientStatus>(id))
             .HasColumnName("status")
             .HasColumnType("integer")
             .IsRequired();
