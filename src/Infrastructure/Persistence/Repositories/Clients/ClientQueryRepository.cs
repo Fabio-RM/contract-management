@@ -42,20 +42,20 @@ public class ClientQueryRepository : IClientQueryRepository
             clientsQuery = query.OrderBy.ToLower() switch
             {
                 "name" => descending
-                    ? clientsQuery.OrderByDescending(c => c.Name)
-                    : clientsQuery.OrderBy(c => c.Name),
+                    ? clientsQuery.OrderByDescending(c => c.Name.Value)
+                    : clientsQuery.OrderBy(c => c.Name.Value),
                 "cnpj" => descending
-                    ? clientsQuery.OrderByDescending(c => c.Cnpj)
-                    : clientsQuery.OrderBy(c => c.Cnpj),
+                    ? clientsQuery.OrderByDescending(c => c.Cnpj.Value)
+                    : clientsQuery.OrderBy(c => c.Cnpj.Value),
                 "status" => descending
-                    ? clientsQuery.OrderByDescending(c => c.Status)
-                    : clientsQuery.OrderBy(c => c.Status),
+                    ? clientsQuery.OrderByDescending(c => c.Status.DisplayName)
+                    : clientsQuery.OrderBy(c => c.Status.DisplayName),
                 _ => clientsQuery
             };
         }
         else    // If no order by provided, falls to default
         {
-            clientsQuery = clientsQuery.OrderBy(c => c.Name).ThenBy(c => c.Cnpj);
+            clientsQuery = clientsQuery.OrderBy(c => c.Name.Value).ThenBy(c => c.Cnpj.Value);
         }
         
         var totalCount = await clientsQuery.CountAsync(cancellationToken);

@@ -1,5 +1,5 @@
-using Application.Clients.Exceptions;
 using Application.Common.Interfaces;
+using Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -26,7 +26,7 @@ public class UnitOfWork : IUnitOfWork
                   ConstraintName: "IX_clients_cnpj"
               })
         {
-            throw new ClientAlreadyExistsException();
+            throw new UniqueConstraintException("CNPJ");
         }
     }
 }
