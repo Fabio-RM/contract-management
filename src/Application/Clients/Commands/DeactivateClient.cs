@@ -13,8 +13,6 @@ public static class DeactivateClient
         private readonly IClientWriteRepository _repository;
         private readonly IDateTimeProvider _dateTimeProvider;
     
-        public DateTime UtcNow => DateTime.Now;
-    
         public Handler(IClientWriteRepository repository, IDateTimeProvider dateTimeProvider)
         {
             _repository = repository;

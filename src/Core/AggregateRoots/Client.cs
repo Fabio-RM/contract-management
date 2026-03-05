@@ -60,6 +60,6 @@ public class Client
     
     public string GetStatus()
     {
-        return Status.ToString();
+        return Status.DisplayName;
     }
 }

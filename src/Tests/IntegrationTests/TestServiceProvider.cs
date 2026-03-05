@@ -7,6 +7,7 @@ using Core.Interfaces.Repositories;
 using Infrastructure;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories.Clients;
+using Infrastructure.Providers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,8 @@ public static class TestServiceProvider
                 typeof(ApplicationAssemblyMarker).Assembly,
                 typeof(InfrastructureAssemblyMarker).Assembly)
             );
+        
+        services.AddTransient(typeof(IDateTimeProvider), typeof(DateTimeProvider));
         
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));

@@ -53,7 +53,7 @@ public class ClientQueryRepository : IClientQueryRepository
                 _ => clientsQuery
             };
         }
-        else    // If no order by provided, falls to default
+        else    // If no order by provided, falls back to default
         {
             clientsQuery = clientsQuery.OrderBy(c => c.Name.Value).ThenBy(c => c.Cnpj.Value);
         }
@@ -84,12 +84,13 @@ public class ClientQueryRepository : IClientQueryRepository
     {
         return await _context.Clients
             .AsNoTracking()
+            .Where(c => c.Id == clientId)
             .Select(c => new ClientDto(
                 c.Id,
                 c.Cnpj.Value,
                 c.Name.Value,
                 c.Status.DisplayName)
             )
-            .FirstOrDefaultAsync(c => c.Id == clientId, cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }
