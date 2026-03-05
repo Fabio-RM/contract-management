@@ -10,8 +10,10 @@
 # Build results
 **/bin/
 **/obj/
+**/[Dd]ebug/
 **/bin/**
 **/obj/**
+**/[Dd]ebug/**
 
 [Dd]ebug/
 [Dd]ebugPublic/
