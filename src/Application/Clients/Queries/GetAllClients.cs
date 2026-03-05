@@ -8,14 +8,13 @@ namespace Application.Clients.Queries;
 
 public static class GetAllClients
 {
-    public record Query() : PagedQuery, IQuery<PagedResults<ClientDto>>
-    {
-        public string? CnpjFilter { get; init; } = string.Empty;
-        public string? NameFilter { get; init; } = string.Empty;
-        public string? StatusFilter { get; init; } = string.Empty;
-        public string? OrderBy { get; init; } = string.Empty;
-        public bool? Descending { get; init; } = false;
-    }
+    public record Query(
+        string? CnpjFilter = null,
+        string? NameFilter = null,
+        string? StatusFilter = null,
+        string? OrderBy = null,
+        bool? Descending = false)
+        : PagedQuery, IQuery<PagedResults<ClientDto>>;
     
     public class Handler : IRequestHandler<Query, PagedResults<ClientDto>>
     {
