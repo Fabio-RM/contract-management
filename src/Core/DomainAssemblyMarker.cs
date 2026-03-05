@@ -1,6 +1,3 @@
 namespace Core;
 
-public class DomainAssemblyMarker
-{
-    
-}
+public sealed class DomainAssemblyMarker;
