@@ -2,8 +2,6 @@ using System.Data.Common;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Respawn;
-using Respawn.Graph;
 using Testcontainers.PostgreSql;
 
 namespace Tests.IntegrationTests;
@@ -39,7 +37,8 @@ public class DatabaseFixture : IAsyncLifetime
     {
         using var scope = ServiceProvider.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        // Isso apaga os dados de todas as tabelas mapeadas no EF
+        
+        // Remove all data from clients tables after a test
         await db.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"clients\" RESTART IDENTITY CASCADE;");
     }
 }
