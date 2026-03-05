@@ -45,16 +45,16 @@ public class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
             .IsRequired();
 
         builder.Property<DateTime>("created_at")
-            .HasColumnType("timestamp")
+            .HasColumnType("timestamp with time zone")
             .IsRequired();
         
         builder.Property<DateTime?>("updated_at")
-            .HasColumnType("timestamp")
+            .HasColumnType("timestamp with time zone")
             .IsRequired(false);
         
         builder.Property(c => c.DeletedAt)
             .HasColumnName("deleted_at")
-            .HasColumnType("timestamp")
+            .HasColumnType("timestamp with time zone")
             .IsRequired(false);
     }
 }
