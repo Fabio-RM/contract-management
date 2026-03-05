@@ -1,4 +1,5 @@
 using Application.Clients.Commands;
+using Application.Clients.DTOs;
 using Application.Clients.Exceptions;
 using Application.Clients.Queries;
 using FluentAssertions;
@@ -6,6 +7,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Xunit.Abstractions;
 
 namespace Tests.IntegrationTests.Clients;
 
@@ -13,8 +15,13 @@ namespace Tests.IntegrationTests.Clients;
 public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, IAsyncLifetime
 {
     private readonly DatabaseFixture _fixture;
+    private readonly ITestOutputHelper _output;
 
-    public ClientRepositoryIntegrationTests(DatabaseFixture fixture) => _fixture = fixture;
+    public ClientRepositoryIntegrationTests(DatabaseFixture fixture, ITestOutputHelper testOutputHelper)
+    {
+        _fixture = fixture;
+        _output = testOutputHelper;
+    }
 
     public async Task InitializeAsync() => await _fixture.ResetDatabaseAsync();
     
@@ -24,7 +31,6 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
     public async Task Should_persist_client_when_command_is_executed()
     {
         using var scope = _fixture.ServiceProvider.CreateScope();
-        
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         
@@ -47,7 +53,6 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
     public async Task Should_throw_exception_when_add_client_with_same_cnpj()
     {
         using var scope = _fixture.ServiceProvider.CreateScope();
-        
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         
@@ -75,5 +80,25 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         
         clients.Should().NotBeNull();
         clients.TotalCount.Should().Be(2);
+    }
+
+    [Fact]
+    public async Task Should_retrieve_all_clients_with_filters()
+    {
+        using var scope = _fixture.ServiceProvider.CreateScope();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        
+        await mediator.Send(new CreateClient.Command("12.456.789/0001-23", "John Doe"));
+        await mediator.Send(new CreateClient.Command("12.456.789/0001-24", "John Snow"));
+        await mediator.Send(new CreateClient.Command("12.456.789/0001-25", "Anna Doe"));
+        
+        var query = new GetAllClients.Query(NameFilter: "John", OrderBy: "name", Descending: true);
+        var clients = await mediator.Send(query);
+        
+        clients.Should().NotBeNull();
+        clients.TotalCount.Should().Be(2);
+        clients.Items[0].Name.Should().Be("John Snow");
+        clients.Items[1].Name.Should().Be("John Doe");
     }
 }

@@ -1,4 +1,3 @@
-using System.Reflection;
 using Application;
 using Application.Clients.Interfaces.Repositories;
 using Application.Common.Behaviors;
@@ -36,6 +35,7 @@ public static class TestServiceProvider
         
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
+
         services.AddScoped<IClientWriteRepository, ClientWriteRepository>();
         services.AddScoped<IClientQueryRepository, ClientQueryRepository>();
         
