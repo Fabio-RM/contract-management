@@ -22,8 +22,8 @@ public static class CreateClient
 
         public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
         {
-            ClientCnpj cnpj = new ClientCnpj(request.Cnpj);
-            ClientName name = new ClientName(request.Name);
+            Cnpj cnpj = new Cnpj(request.Cnpj);
+            Name name = new Name(request.Name);
 
             bool cnpjExists = await _repository.ExistsByCnpjAsync(cnpj, cancellationToken);
 

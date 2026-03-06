@@ -8,8 +8,8 @@ namespace Application.Clients.Commands;
 
 public static class RenameClient
 {
-    public record Command(Guid ClientId, string NewName) : ICommand<Result<Unit>>;
-    public class Handler : IRequestHandler<Command, Result<Unit>>
+    public record Command(Guid ClientId, string NewName) : ICommand<Result>;
+    public class Handler : IRequestHandler<Command, Result>
     {
         private readonly IClientWriteRepository _repository;
 
@@ -18,17 +18,17 @@ public static class RenameClient
             _repository = repository;
         }
 
-        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
         {
-            ClientName newName = new ClientName(request.NewName);
+            Name newName = new Name(request.NewName);
             var client = await _repository.GetByIdAsync(request.ClientId, cancellationToken);
 
             if (client is null) 
-                return Result<Unit>.Failure("Client not found");
+                return Result.Failure("Client not found");
 
             client.Rename(newName);
 
-            return Result<Unit>.Success(Unit.Value);
+            return Result.Success();
         }
     }   
 }

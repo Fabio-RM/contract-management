@@ -1,27 +1,34 @@
 namespace Shared.Results;
 
-public class Result<TValue>
+public class Result
 {
-    public TValue? Value  { get; private set; }
-    public bool IsSuccess { get; private set; }
+    public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
-    public string Error { get; private set; }
+    public string Error { get; }
 
-    private Result(bool isSuccess, string error)
+    protected Result(bool isSuccess, string error)
     {
         IsSuccess = isSuccess;
         Error = error;
-        Value = default;
     }
 
-    private Result(TValue value, bool isSuccess, string error)
+    public static Result Success() => new Result(true, string.Empty);
+    public static Result Failure(string error) => new Result(false, error);
+}
+
+public class Result<T> : Result
+{
+    private readonly T _value;
+    public T Value => IsSuccess 
+        ? _value 
+        : throw new InvalidOperationException("Não é possível acessar o valor de uma falha.");
+
+    private Result(T value, bool isSuccess, string error) 
+        : base(isSuccess, error)
     {
-        IsSuccess = isSuccess;
-        Error = error;
-        Value = value;
+        _value = value;
     }
-    
-    public static Result<TValue?> Success() => new (true, string.Empty);
-    public static Result<TValue> Success(TValue value) => new (value, true, string.Empty);
-    public static Result<TValue?> Failure(string error) => new (false, error);
+
+    public static Result<T> Success(T value) => new Result<T>(value, true, string.Empty);
+    public new static Result<T> Failure(string error) => new Result<T>(default!, false, error);
 }
