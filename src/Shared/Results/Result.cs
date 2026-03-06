@@ -1,6 +1,4 @@
-using MediatR;
-
-namespace Application.Common.Results;
+namespace Shared.Results;
 
 public class Result<TValue>
 {

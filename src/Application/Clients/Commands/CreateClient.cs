@@ -1,9 +1,9 @@
 using Application.Common.Interfaces;
-using Application.Common.Results;
 using Core.AggregateRoots;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using MediatR;
+using Shared.Results;
 
 namespace Application.Clients.Commands;
 

@@ -1,8 +1,8 @@
 using Application.Clients.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Results;
 using Core.Interfaces.Repositories;
 using MediatR;
+using Shared.Results;
 
 namespace Application.Clients.Commands;
 
