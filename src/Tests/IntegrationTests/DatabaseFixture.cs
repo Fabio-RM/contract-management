@@ -13,8 +13,6 @@ public class DatabaseFixture : IAsyncLifetime
     private PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:16-alpine")
         .Build();
-    
-    private DbConnection _connection;
 
     public async Task InitializeAsync()
     {

@@ -1,5 +1,4 @@
 using Application.Clients.Commands;
-using Application.Clients.Exceptions;
 using FluentAssertions;
 
 namespace Tests.UnitTests.Application.Clients.Commands;
@@ -20,8 +19,8 @@ public class CreateClientTests
         
         var result = await handler.Handle(command, CancellationToken.None);
         
-        result.Should().NotBeEmpty();
-        result.GetType().Should().Be(typeof(Guid));
+        result.IsSuccess.Should().BeTrue();
+        result.Value.GetType().Should().Be(typeof(Guid));
     }
 
     [Fact]
@@ -35,9 +34,9 @@ public class CreateClientTests
             Cnpj: "INVALID",
             Name: "John Doe");
         
-        Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
+        var result = async () => await handler.Handle(command, CancellationToken.None);
         
-        await act.Should().ThrowAsync<Exception>();
+        await result.Should().ThrowAsync<ArgumentException>();
     }
 
     [Fact]
@@ -55,8 +54,9 @@ public class CreateClientTests
         await handler.Handle(command, CancellationToken.None);
         
         // Try to add the same client again
-        Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
         
-        await act.Should().ThrowAsync<ClientAlreadyExistsException>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be("Client already exists");
     }
 }

@@ -17,12 +17,9 @@ namespace Tests.IntegrationTests.Clients;
 public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, IAsyncLifetime
 {
     private readonly DatabaseFixture _fixture;
-    private readonly ITestOutputHelper _output;
-
-    public ClientRepositoryIntegrationTests(DatabaseFixture fixture, ITestOutputHelper testOutputHelper)
+    public ClientRepositoryIntegrationTests(DatabaseFixture fixture)
     {
         _fixture = fixture;
-        _output = testOutputHelper;
     }
 
     public async Task InitializeAsync() => await _fixture.ResetDatabaseAsync();
@@ -44,7 +41,7 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Cnpj.Value == "12456789000123");
         
-        Assert.IsType<Guid>(result);
+        result.IsSuccess.Should().BeTrue();
         
         client.Should().NotBeNull();
         client.Cnpj.Value.Should().Be("12456789000123");
@@ -52,7 +49,7 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
     }
 
     [Fact]
-    public async Task Should_throw_exception_when_add_client_with_same_cnpj()
+    public async Task Should_fail_when_add_client_with_same_cnpj()
     {
         using var scope = _fixture.ServiceProvider.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
@@ -61,9 +58,9 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         
         await mediator.Send(command);
         
-        Func<Task> act = async () => await mediator.Send(command);
+        var result = await mediator.Send(command);
     
-        await act.Should().ThrowAsync<ClientAlreadyExistsException>();
+        result.IsFailure.Should().BeTrue();
     }
 
     [Fact]
@@ -71,10 +68,10 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
     {
         using var scope = _fixture.ServiceProvider.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         
         var createClientCommand = new CreateClient.Command("12.456.789/0001-23", "John Doe");
-        var clientId = await mediator.Send(createClientCommand);
+        var res = await mediator.Send(createClientCommand);
+        var clientId = res.Value;
         
         var deactivateClientCommand = new DeactivateClient.Command(clientId);
         await mediator.Send(deactivateClientCommand);
@@ -108,7 +105,8 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         using var scope = _fixture.ServiceProvider.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
         
-        var clientId = await mediator.Send(new CreateClient.Command("12.456.789/0001-23", "John Doe"));
+        var res = await mediator.Send(new CreateClient.Command("12.456.789/0001-23", "John Doe"));
+        var clientId = res.Value;
         
         var query = new GetClientById.Query(clientId);
         var client = await mediator.Send(query);

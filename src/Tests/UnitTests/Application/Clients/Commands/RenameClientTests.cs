@@ -1,9 +1,7 @@
 using Application.Clients.Commands;
-using Application.Clients.Exceptions;
 using Core.AggregateRoots;
 using Core.ValueObjects;
 using FluentAssertions;
-using MediatR;
 
 namespace Tests.UnitTests.Application.Clients.Commands;
 
@@ -29,12 +27,12 @@ public class RenameClientTests
         
         var result = await handler.Handle(command, CancellationToken.None);
         
-        result.Should().Be(Unit.Value);
+        result.IsSuccess.Should().BeTrue();
         client.Name.Value.Should().Be("New Name");
     }
 
     [Fact]
-    public async Task Should_throw_exception_if_client_not_found()
+    public async Task Should_fail_if_client_not_found()
     {
         var repository = new FakeClientsWriteRepository();
         
@@ -44,8 +42,9 @@ public class RenameClientTests
             ClientId: Guid.NewGuid(),
             NewName: "New Name");
         
-        Func<Task> act = async () =>  await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<ClientNotFoundException>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be("Client not found");
     }
 }

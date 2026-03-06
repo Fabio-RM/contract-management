@@ -1,5 +1,4 @@
 using Application.Clients.Commands;
-using Application.Clients.Exceptions;
 using Application.Common.Interfaces;
 using Core.AggregateRoots;
 using Core.ValueObjects;
@@ -30,8 +29,9 @@ public class DeactivateClientTests
         var handler = new DeactivateClient.Handler(repository, dateTimeMock.Object);
         var command = new DeactivateClient.Command(client.Id);
         
-        await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
         
+        result.IsSuccess.Should().BeTrue();
         client.IsActive().Should().BeFalse();
         client.DeletedAt.Should().Be(fixedDate);
     }
@@ -49,8 +49,9 @@ public class DeactivateClientTests
         var handler = new DeactivateClient.Handler(repository, dateTimeMock.Object);
         var command = new DeactivateClient.Command(Guid.NewGuid());
         
-        Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(command, CancellationToken.None);
 
-        await act.Should().ThrowAsync<ClientNotFoundException>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be("Client not found");
     }
 }

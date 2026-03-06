@@ -1,5 +1,5 @@
-using Application.Clients.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Results;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using MediatR;
@@ -8,8 +8,8 @@ namespace Application.Clients.Commands;
 
 public static class RenameClient
 {
-    public record Command(Guid ClientId, string NewName) : ICommand<Unit>;
-    public class Handler : IRequestHandler<Command, Unit>
+    public record Command(Guid ClientId, string NewName) : ICommand<Result<Unit>>;
+    public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly IClientWriteRepository _repository;
 
@@ -18,16 +18,17 @@ public static class RenameClient
             _repository = repository;
         }
 
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             ClientName newName = new ClientName(request.NewName);
             var client = await _repository.GetByIdAsync(request.ClientId, cancellationToken);
 
-            if (client is null) throw new ClientNotFoundException();
+            if (client is null) 
+                return Result<Unit>.Failure("Client not found");
 
             client.Rename(newName);
 
-            return Unit.Value;
+            return Result<Unit>.Success(Unit.Value);
         }
     }   
 }
