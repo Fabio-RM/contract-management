@@ -64,3 +64,6 @@ nunit-*.xml
 .idea/
 .vscode/
 .cursor/
+
+# Testing console
+ConsoleTest/

@@ -1,65 +1,77 @@
+using Core.DomainErrors;
 using Core.Exceptions;
 using Core.ValueObjects;
+using Shared.Results;
 
 namespace Core.AggregateRoots;
 
 public class Client
 {
     public Guid Id { get; private set; }
-    public ClientCnpj Cnpj { get; private set; }
-    public ClientName Name { get; private set; }
+    public Cnpj ClientCnpj { get; private set; }
+    public Name ClientName { get; private set; }
     public ClientStatus Status { get; private set; }
     public DateTime? DeletedAt { get; private set; }
 
     // To be used be EF Core
     private Client() { }
-    private Client(ClientCnpj cnpj, ClientName name)
+    private Client(Cnpj clientCnpj, Name clientName)
     {
-        ArgumentNullException.ThrowIfNull(cnpj);
-        ArgumentNullException.ThrowIfNull(name);
-
         Id = Guid.NewGuid();
-        Cnpj = cnpj;
-        Name = name;
+        ClientCnpj = clientCnpj;
+        ClientName = clientName;
         Status = ClientStatus.Active;
         DeletedAt = null;
     }
 
     // Factory Method
-    public static Client Create(ClientCnpj cnpj, ClientName name)
+    public static Result<Client> Create(string cnpj, string name)
     {
-        return new Client(cnpj, name);
+        var cnpjResult = Cnpj.Create(cnpj);
+        var nameResult = Name.Create(name);
+        
+        var validation = Result.Validate(cnpjResult, nameResult);
+
+        if (validation.IsFailure)
+            return Result<Client>.Failure(validation.Errors);
+        
+        return Result<Client>.Success(new Client(cnpjResult.Value, nameResult.Value));
     }
 
-    public void Rename(ClientName name)
+    public Result Rename(Name newName)
     {
-        ArgumentNullException.ThrowIfNull(name);
-        if (Status.Equals(ClientStatus.Inactive)) throw new ClientInactiveException();
+        if (Status.Equals(ClientStatus.Inactive))
+            return Result.Failure(ClientErrors.IsInactive);
 
-        Name = name;
+        ClientName = newName;
+        
+        return Result.Success();
     }
 
-    public void Deactivate(DateTime utcNow)
+    public Result Deactivate(DateTime utcNow)
     {
-        if (Status.Equals(ClientStatus.Inactive)) throw new ClientInactiveException();
+        if (Status.Equals(ClientStatus.Inactive)) 
+            return Result.Failure(ClientErrors.IsInactive);
+        
         Status = ClientStatus.Inactive;
         DeletedAt = utcNow;
+        
+        return Result.Success();
     }
 
-    public void Activate()
+    public Result Activate()
     {
-        if (Status.Equals(ClientStatus.Active)) throw new ClientActiveException();
+        if (Status.Equals(ClientStatus.Active))
+            return Result.Failure(ClientErrors.IsActive);
+        
         Status = ClientStatus.Active;
         DeletedAt = null;
+        
+        return Result.Success();
     }
 
     public bool IsActive()
     {
         return Status.Equals(ClientStatus.Active);
-    }
-    
-    public string GetStatus()
-    {
-        return Status.DisplayName;
     }
 }

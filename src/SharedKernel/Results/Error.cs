@@ -1,4 +1,4 @@
-namespace Shared.Errors;
+namespace Shared.Results;
 
 public sealed record Error(string Code, string Message)
 {
