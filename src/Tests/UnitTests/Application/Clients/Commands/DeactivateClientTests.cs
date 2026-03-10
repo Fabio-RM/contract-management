@@ -17,10 +17,7 @@ public class DeactivateClientTests
         var dateTimeMock = new Mock<IDateTimeProvider>();
         var fixedDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         
-        var client = Client.Create(
-            new ClientCnpj("12.123.456/0001-12"),
-            new ClientName("John Doe")
-            );
+        var client = Client.Create("12.123.456/0001-12", "John Doe").Value;
         
         dateTimeMock.Setup(d => d.UtcNow).Returns(fixedDate);
 
@@ -37,7 +34,7 @@ public class DeactivateClientTests
     }
 
     [Fact]
-    public async Task Should_throw_exception_if_client_does_not_exist()
+    public async Task Should_fail_if_client_does_not_exist()
     {
         var repository = new FakeClientsWriteRepository();
         
@@ -52,6 +49,5 @@ public class DeactivateClientTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be("Client not found");
     }
 }

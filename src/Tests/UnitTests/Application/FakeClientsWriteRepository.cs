@@ -25,13 +25,10 @@ public class FakeClientsWriteRepository : IClientWriteRepository
         return Task.CompletedTask;
     }
 
-    public Task<bool> ExistsByCnpjAsync(ClientCnpj cnpj, CancellationToken cancellationToken)
+    public Task<bool> ExistsByCnpjAsync(Cnpj cnpj, CancellationToken cancellationToken)
     {
-        foreach (var client in _clients)
-        {
-            if (client.Cnpj.Equals(cnpj))
-                return Task.FromResult(true);
-        }
+        if (_clients.Any(client => client.ClientCnpj.Equals(cnpj)))
+            return Task.FromResult(true);
         
         return Task.FromResult(false);
     }

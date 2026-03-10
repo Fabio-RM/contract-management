@@ -1,11 +1,10 @@
-using System;
+using Core.DomainErrors;
 using Core.ValueObjects;
 using FluentAssertions;
-using Xunit;
 
 namespace Tests.UnitTests.Core.ValueObjects;
 
-public class ClientCnpjTests
+public class CnpjTests
 {
     [Theory]
     [InlineData("")]
@@ -16,11 +15,11 @@ public class ClientCnpjTests
     [InlineData("1234567800011")]
     [InlineData("12.345.678/0001-123")]
     [InlineData("123456780001123")]
-    public void Should_throw_exception_when_cnpj_is_invalid(string invalidCnpj)
+    public void Should_failure_when_cnpj_is_invalid(string invalidCnpj)
     {
-        Action act = () => new ClientCnpj(invalidCnpj);
-
-        act.Should().Throw<Exception>();
+        var result = Cnpj.Create(invalidCnpj);
+        
+        result.IsFailure.Should().BeTrue();
     }
     
     [Theory]
@@ -28,17 +27,22 @@ public class ClientCnpjTests
     [InlineData("12456789000112")]
     public void Should_create_client_cnpj_when_valid(string validCnpj)
     {
-        var cnpj = new ClientCnpj(validCnpj);
-
+        var result = Cnpj.Create(validCnpj);
+        var cnpj = result.Value;
+        
+        result.IsSuccess.Should().BeTrue();
         cnpj.Value.Should().Be("12456789000112");
     }
     
     [Fact]
     public void Two_equal_cnpjs_should_be_equal()
     {
-        var cnpj1 = new ClientCnpj("12456789000112");
-        var cnpj2 = new ClientCnpj("12.456.789/0001-12");
+        var resultCnpj1 = Cnpj.Create("12456789000112");
+        var resultCnpj2 = Cnpj.Create("12.456.789/0001-12");
 
+        var cnpj1 = resultCnpj1.Value;
+        var cnpj2 = resultCnpj2.Value;
+        
         cnpj1.Equals(cnpj2).Should().BeTrue();
     }
-} 
+}

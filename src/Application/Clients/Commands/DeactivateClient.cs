@@ -1,5 +1,6 @@
 using Application.Clients.Exceptions;
 using Application.Common.Interfaces;
+using Core.DomainErrors;
 using Core.Interfaces.Repositories;
 using MediatR;
 using Shared.Results;
@@ -25,7 +26,7 @@ public static class DeactivateClient
             var client = await _repository.GetByIdAsync(request.ClientId, cancellationToken);
         
             if (client is null) 
-                return Result.Failure("Client not found");
+                return Result.Failure(ClientErrors.NotFound);
         
             client.Deactivate(_dateTimeProvider.UtcNow);
         

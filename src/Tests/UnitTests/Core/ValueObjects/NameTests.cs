@@ -5,16 +5,16 @@ using Xunit;
 
 namespace Tests.UnitTests.Core.ValueObjects;
 
-public class ClientNameTests
+public class NameTests
 {
     [Theory]
     [InlineData("")]
     [InlineData("    ")]
-    public void Should_throw_exception_when_name_is_invalid(string invalidName)
+    public void Should_result_failure_when_name_is_invalid(string invalidName)
     {
-        Action act = () => new ClientName(invalidName);
+        var result = Name.Create(invalidName);
         
-        act.Should().Throw<Exception>();
+        result.IsFailure.Should().BeTrue();
     }
 
     [Theory]
@@ -22,16 +22,21 @@ public class ClientNameTests
     [InlineData("Anna")]
     public void Should_create_client_name_when_valid(string validName)
     {
-        var name = new ClientName(validName);
+        var result = Name.Create(validName);
+        var name =  result.Value;
         
+        result.IsSuccess.Should().BeTrue();
         name.Value.Should().Be(validName);
     }
 
     [Fact]
     public void Two_equal_names_should_be_equal()
     {
-        var name1 = new ClientName("John Doe");
-        var name2 = new ClientName("   John Doe    ");
+        var resultName1 = Name.Create("John Doe");
+        var resultName2 = Name.Create("   John Doe    ");
+        
+        var name1 = resultName1.Value;
+        var name2 = resultName2.Value;
         
         name1.Equals(name2).Should().BeTrue();
     }
