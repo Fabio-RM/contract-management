@@ -22,7 +22,6 @@ public class Client : AuditableEntity
         ClientName = clientName;
         Status = ClientStatus.Active;
         CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
         DeletedAt = null;
     }
 
@@ -46,7 +45,6 @@ public class Client : AuditableEntity
             return Result.Failure(ClientErrors.IsInactive);
 
         ClientName = newName;
-        UpdatedAt = DateTime.UtcNow;
         
         return Result.Success();
     }
@@ -57,7 +55,6 @@ public class Client : AuditableEntity
             return Result.Failure(ClientErrors.IsInactive);
         
         Status = ClientStatus.Inactive;
-        UpdatedAt = DateTime.UtcNow;
         DeletedAt = utcNow;
         
         return Result.Success();
@@ -69,7 +66,6 @@ public class Client : AuditableEntity
             return Result.Failure(ClientErrors.IsActive);
         
         Status = ClientStatus.Active;
-        UpdatedAt = DateTime.UtcNow;
         DeletedAt = null;
         
         return Result.Success();
