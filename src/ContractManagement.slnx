@@ -1,8 +1,9 @@
 <Solution>
   <Project Path="Application/Application.csproj" />
+  <Project Path="ConsoleTest/ConsoleTest.csproj" />
   <Project Path="Core/Core.csproj" />
   <Project Path="Infrastructure/Infrastructure.csproj" />
-  <Project Path="Shared/Shared.csproj" />
+  <Project Path="SharedKernel\SharedKernel.csproj" />
   <Project Path="Tests/Tests.csproj" />
   <Project Path="WebApi/WebApi.csproj" />
 </Solution>

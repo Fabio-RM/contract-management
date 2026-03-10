@@ -39,8 +39,10 @@ public class GetAllClientsTests
         var query = new GetAllClients.Query();
         
         var result = await handler.Handle(query, CancellationToken.None);
+        var clients = result.Value;
         
-        result.Should().BeEquivalentTo(expectedResults);
+        result.IsSuccess.Should().BeTrue();
+        clients.Should().BeEquivalentTo(expectedResults);
     }
 
     [Fact]
@@ -62,7 +64,9 @@ public class GetAllClientsTests
         };
         
         var result = await handler.Handle(query, CancellationToken.None);
+        var clients = result.Value;
         
-        result.Should().BeEquivalentTo(expectedResults);
+        result.IsSuccess.Should().BeTrue();
+        clients.Should().BeEquivalentTo(expectedResults);
     }
 }

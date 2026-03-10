@@ -1,23 +1,32 @@
 using Core.Common;
+using Core.DomainErrors;
+using Shared.Results;
 
 namespace Core.ValueObjects;
 
-public class ClientName : ValueObject
+public class Name : ValueObject
 {
     private const int MaxLength = 255;
     public string Value { get; }
 
-    public ClientName(string value)
+    private Name(string value)
     {
-        string normalizedName = value.Trim();
+        Value = value;
+    }
+
+    public static Result<Name> Create(string value)
+    {
+        var errors = new List<Error>();
         
+        string normalizedName = value.Trim();
+
         if (string.IsNullOrWhiteSpace(normalizedName))
-            throw new ArgumentException("Name cannot be empty", nameof(normalizedName));
+            return Result<Name>.Failure(NameErrors.NameEmpty);
 
         if (normalizedName.Length > MaxLength)
-            throw new ArgumentException($"Name cannot be longer than {MaxLength} characters", nameof(normalizedName));
-
-        Value = normalizedName;
+            return Result<Name>.Failure(NameErrors.NameTooLong);
+        
+        return Result<Name>.Success(new Name(normalizedName));
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Core.DomainErrors;
 using Core.Interfaces.Repositories;
 using MediatR;
 using Shared.Results;
@@ -22,8 +23,8 @@ public static class ActivateClient
         {
             var client = await _repository.GetByIdAsync(request.ClientId, cancellationToken);
         
-            if (client is null) 
-                return Result.Failure("Client not found");
+            if (client is null)
+                return Result.Failure(ClientErrors.NotFound);
         
             client.Activate();
         

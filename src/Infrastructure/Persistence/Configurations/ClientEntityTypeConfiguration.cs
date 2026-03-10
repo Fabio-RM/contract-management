@@ -16,7 +16,7 @@ public class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
             .HasName("client_id");
 
         builder.OwnsOne(
-            c => c.Cnpj,
+            c => c.ClientCnpj,
             cnpj =>
             {
                 cnpj.Property(c => c.Value)
@@ -29,7 +29,7 @@ public class ClientEntityTypeConfiguration : IEntityTypeConfiguration<Client>
             });
         
         builder.OwnsOne(
-                c => c.Name,
+                c => c.ClientName,
                 name => name.Property(c => c.Value)
                     .HasColumnName("name")
                     .HasColumnType("varchar(255)")

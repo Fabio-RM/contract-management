@@ -24,10 +24,10 @@ public class ClientQueryRepository : IClientQueryRepository
             .AsQueryable();
         
         if (!string.IsNullOrWhiteSpace(query.CnpjFilter))
-            clientsQuery = clientsQuery.Where(c => c.Cnpj.Value.Contains(query.CnpjFilter));
+            clientsQuery = clientsQuery.Where(c => c.ClientCnpj.Value.Contains(query.CnpjFilter));
         
         if (!string.IsNullOrWhiteSpace(query.NameFilter))
-            clientsQuery = clientsQuery.Where(c => c.Name.Value.Contains(query.NameFilter));
+            clientsQuery = clientsQuery.Where(c => c.ClientName.Value.Contains(query.NameFilter));
 
         if (!string.IsNullOrWhiteSpace(query.StatusFilter))
         {
@@ -42,11 +42,11 @@ public class ClientQueryRepository : IClientQueryRepository
             clientsQuery = query.OrderBy.ToLower() switch
             {
                 "name" => descending
-                    ? clientsQuery.OrderByDescending(c => c.Name.Value)
-                    : clientsQuery.OrderBy(c => c.Name.Value),
+                    ? clientsQuery.OrderByDescending(c => c.ClientName.Value)
+                    : clientsQuery.OrderBy(c => c.ClientName.Value),
                 "cnpj" => descending
-                    ? clientsQuery.OrderByDescending(c => c.Cnpj.Value)
-                    : clientsQuery.OrderBy(c => c.Cnpj.Value),
+                    ? clientsQuery.OrderByDescending(c => c.ClientCnpj.Value)
+                    : clientsQuery.OrderBy(c => c.ClientCnpj.Value),
                 "status" => descending
                     ? clientsQuery.OrderByDescending(c => c.Status.DisplayName)
                     : clientsQuery.OrderBy(c => c.Status.DisplayName),
@@ -55,7 +55,7 @@ public class ClientQueryRepository : IClientQueryRepository
         }
         else    // If no order by provided, falls back to default
         {
-            clientsQuery = clientsQuery.OrderBy(c => c.Name.Value).ThenBy(c => c.Cnpj.Value);
+            clientsQuery = clientsQuery.OrderBy(c => c.ClientName.Value).ThenBy(c => c.ClientCnpj.Value);
         }
         
         var totalCount = await clientsQuery.CountAsync(cancellationToken);
@@ -63,8 +63,8 @@ public class ClientQueryRepository : IClientQueryRepository
         var results = clientsQuery
             .Select(c => new ClientDto(
                 c.Id,
-                c.Cnpj.Value,
-                c.Name.Value,
+                c.ClientCnpj.Value,
+                c.ClientName.Value,
                 c.Status.DisplayName
             ));
         
@@ -87,8 +87,8 @@ public class ClientQueryRepository : IClientQueryRepository
             .Where(c => c.Id == clientId)
             .Select(c => new ClientDto(
                 c.Id,
-                c.Cnpj.Value,
-                c.Name.Value,
+                c.ClientCnpj.Value,
+                c.ClientName.Value,
                 c.Status.DisplayName)
             )
             .FirstOrDefaultAsync(cancellationToken);

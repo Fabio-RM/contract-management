@@ -7,5 +7,5 @@ public interface IClientWriteRepository
 {
     public Task<Client?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     public Task AddAsync(Client client, CancellationToken cancellationToken);
-    public Task<bool> ExistsByCnpjAsync(ClientCnpj cnpj, CancellationToken cancellationToken);
+    public Task<bool> ExistsByCnpjAsync(Cnpj cnpj, CancellationToken cancellationToken);
 }

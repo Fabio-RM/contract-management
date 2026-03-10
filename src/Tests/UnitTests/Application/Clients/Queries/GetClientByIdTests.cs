@@ -33,8 +33,10 @@ public class GetClientByIdTests
         var handler = new GetClientById.Handler(repository);
         var query = new GetClientById.Query(clientDto.Id);
         
-        var client = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, CancellationToken.None);
+        var client = result.Value;
         
+        result.IsSuccess.Should().BeTrue();
         client.Should().NotBeNull();
         client.Id.Should().Be(clientDto.Id);
         client.Cnpj.Should().Be(clientDto.Cnpj);
@@ -43,15 +45,15 @@ public class GetClientByIdTests
     }
 
     [Fact]
-    public async Task Should_throw_exception_when_client_not_found()
+    public async Task Should_fail_when_client_not_found()
     {
         var repository = new FakeClientsQueryRepository(_clientsDtoToAdd);
         
         var handler = new GetClientById.Handler(repository);
         var query = new GetClientById.Query(Guid.NewGuid());
         
-        Func<Task> act = async () => await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(query, CancellationToken.None);
 
-        await act.Should().ThrowAsync<ClientNotFoundException>();
+        result.IsFailure.Should().BeTrue();
     }
 }

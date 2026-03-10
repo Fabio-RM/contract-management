@@ -1,4 +1,5 @@
 using Core.AggregateRoots;
+using Core.DomainErrors;
 using Core.Exceptions;
 using Core.ValueObjects;
 using FluentAssertions;
@@ -10,12 +11,15 @@ public class ClientTests
     [Fact]
     public void Should_create_client_as_active()
     {
-        ClientCnpj cnpj = new ClientCnpj("12.456.789/0001-12");
-        ClientName clientName = new ClientName("John Doe");
+        var cnpjResult = Cnpj.Create("12.456.789/0001-12");
+        var nameResult = Name.Create("John Doe");
         
-        Client c = Client.Create(cnpj, clientName);
+        var cnpj = cnpjResult.Value;
+        var name = nameResult.Value;
         
-        c.IsActive().Should().BeTrue();
+        var result = Client.Create(cnpj.Value, name.Value);
+        
+        result.Value.IsActive().Should().BeTrue();
     }
 
     [Fact]
@@ -23,28 +27,37 @@ public class ClientTests
     {
         var fixedDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         
-        ClientCnpj cnpj = new ClientCnpj("12.456.789/0001-12");
-        ClientName clientName = new ClientName("John Doe");
+        var cnpjResult = Cnpj.Create("12.456.789/0001-12");
+        var nameResult = Name.Create("John Doe");
         
-        Client c = Client.Create(cnpj, clientName);
+        var cnpj = cnpjResult.Value;
+        var name = nameResult.Value;
         
-        c.Deactivate(fixedDate);
+        var result = Client.Create(cnpj.Value, name.Value);
+        var client = result.Value;
         
-        c.IsActive().Should().BeFalse();
-        c.DeletedAt.Should().Be(fixedDate);
+        client.Deactivate(fixedDate);
+        
+        result.IsSuccess.Should().BeTrue();
+        client.IsActive().Should().BeFalse();
+        client.DeletedAt.Should().Be(fixedDate);
     }
 
     [Fact]
     public void Should_not_activate_client_already_active()
     {
-        ClientCnpj cnpj = new ClientCnpj("12.456.789/0001-12");
-        ClientName clientName = new ClientName("John Doe");
+        var cnpjResult = Cnpj.Create("12.456.789/0001-12");
+        var nameResult = Name.Create("John Doe");
         
-        Client c = Client.Create(cnpj, clientName);
+        var cnpj = cnpjResult.Value;
+        var name = nameResult.Value;
         
-        Action act = () => c.Activate();
+        var clientResult = Client.Create(cnpj.Value, name.Value);
+        var client = clientResult.Value;
+
+        var result = client.Activate();
         
-        act.Should().Throw<ClientActiveException>();
+        result.IsFailure.Should().BeTrue();
     }
     
     [Fact]
@@ -52,14 +65,19 @@ public class ClientTests
     {
         var fixedDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         
-        ClientCnpj cnpj = new ClientCnpj("12.456.789/0001-12");
-        ClientName clientName = new ClientName("John Doe");
+        var cnpjResult = Cnpj.Create("12.456.789/0001-12");
+        var nameResult = Name.Create("John Doe");
         
-        Client c = Client.Create(cnpj, clientName);
-        c.Deactivate(fixedDate);
+        var cnpj = cnpjResult.Value;
+        var name = nameResult.Value;
         
-        Action act = () => c.Deactivate(fixedDate);
+        var clientResult = Client.Create(cnpj.Value, name.Value);
+        var client = clientResult.Value;
         
-        act.Should().Throw<ClientInactiveException>();
+        client.Deactivate(fixedDate);
+        
+        var result = client.Deactivate(fixedDate);
+        
+        result.IsFailure.Should().BeTrue();
     }
 }

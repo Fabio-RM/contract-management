@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Core.DomainErrors;
 using Core.Interfaces.Repositories;
 using Core.ValueObjects;
 using MediatR;
@@ -20,13 +21,14 @@ public static class RenameClient
 
         public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
         {
-            Name newName = new Name(request.NewName);
             var client = await _repository.GetByIdAsync(request.ClientId, cancellationToken);
 
-            if (client is null) 
-                return Result.Failure("Client not found");
+            if (client == null) 
+                return Result.Failure(ClientErrors.NotFound);
 
-            client.Rename(newName);
+            var newName = Name.Create(request.NewName);
+            
+            client.Rename(newName.Value);
 
             return Result.Success();
         }

@@ -39,13 +39,12 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         
         var client = await db.Clients
             .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Cnpj.Value == "12456789000123");
+            .FirstOrDefaultAsync(c => c.ClientCnpj.Value == "12456789000123");
         
         result.IsSuccess.Should().BeTrue();
-        
         client.Should().NotBeNull();
-        client.Cnpj.Value.Should().Be("12456789000123");
-        client.Name.Value.Should().Be("John Doe");
+        client.ClientCnpj.Value.Should().Be("12456789000123");
+        client.ClientName.Value.Should().Be("John Doe");
     }
 
     [Fact]
@@ -71,13 +70,15 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         
         var createClientCommand = new CreateClient.Command("12.456.789/0001-23", "John Doe");
         var res = await mediator.Send(createClientCommand);
+        
         var clientId = res.Value;
         
         var deactivateClientCommand = new DeactivateClient.Command(clientId);
         await mediator.Send(deactivateClientCommand);
         
         var query = new GetClientById.Query(clientId);
-        var client = await mediator.Send(query);
+        var result = await mediator.Send(query);
+        var client = result.Value;
         
         client.Should().NotBeNull();
         client.Status.Should().Be("Inactive");
@@ -93,7 +94,8 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         await mediator.Send(new CreateClient.Command("12.456.789/0001-24", "Anna Doe"));
         
         var query = new GetAllClients.Query();
-        var clients = await mediator.Send(query);
+        var result = await mediator.Send(query);
+        var clients = result.Value;
         
         clients.Should().NotBeNull();
         clients.TotalCount.Should().Be(2);
@@ -109,22 +111,11 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         var clientId = res.Value;
         
         var query = new GetClientById.Query(clientId);
-        var client = await mediator.Send(query);
+        var result = await mediator.Send(query);
+        var client = result.Value;
         
         client.Should().NotBeNull();
     }
-    
-    // [Fact]
-    // public async Task Should_return_empty_if_serach_client_by_id_and_it_not_exists()
-    // {
-    //     using var scope = _fixture.ServiceProvider.CreateScope();
-    //     var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-    //     
-    //     var query = new GetClientById.Query(Guid.NewGuid());
-    //     var client = await mediator.Send(query);
-    //     
-    //     client.Should().BeNull();
-    // }
 
     [Fact]
     public async Task Should_retrieve_all_clients_with_filters()
@@ -137,7 +128,8 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         await mediator.Send(new CreateClient.Command("12.456.789/0001-25", "Anna Doe"));
         
         var query = new GetAllClients.Query(NameFilter: "John", OrderBy: "name", Descending: true);
-        var clients = await mediator.Send(query);
+        var result = await mediator.Send(query);
+        var clients = result.Value;
         
         clients.Should().NotBeNull();
         clients.TotalCount.Should().Be(2);

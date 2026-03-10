@@ -12,10 +12,7 @@ public class RenameClientTests
     {
         var repository = new FakeClientsWriteRepository();
         
-        Client client = Client.Create(
-            new ClientCnpj("12.123.456/0001-12"),
-            new ClientName("John Doe")
-            );
+        var client = Client.Create("12.123.456/0001-12","John Doe").Value;
         
         await repository.AddAsync(client, CancellationToken.None);
         
@@ -23,12 +20,12 @@ public class RenameClientTests
         
         var command = new RenameClient.Command(
             ClientId: client.Id, 
-            NewName: "New Name");
+            NewName: "New ClientName");
         
         var result = await handler.Handle(command, CancellationToken.None);
         
         result.IsSuccess.Should().BeTrue();
-        client.Name.Value.Should().Be("New Name");
+        client.ClientName.Value.Should().Be("New ClientName");
     }
 
     [Fact]
@@ -40,11 +37,11 @@ public class RenameClientTests
         
         var command = new RenameClient.Command(
             ClientId: Guid.NewGuid(),
-            NewName: "New Name");
+            NewName: "John Doe");
         
         var result = await handler.Handle(command, CancellationToken.None);
 
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be("Client not found");
+        result.Errors.Code.Should().Be("Client.NotFound");
     }
 }

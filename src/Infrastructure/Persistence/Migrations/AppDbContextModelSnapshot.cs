@@ -50,7 +50,7 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Core.AggregateRoots.Client", b =>
                 {
-                    b.OwnsOne("Core.ValueObjects.ClientCnpj", "Cnpj", b1 =>
+                    b.OwnsOne("Core.ValueObjects.ClientCnpj", "ClientCnpj", b1 =>
                         {
                             b1.Property<Guid>("ClientId")
                                 .HasColumnType("uuid");
@@ -72,7 +72,7 @@ namespace Infrastructure.Persistence.Migrations
                                 .HasForeignKey("ClientId");
                         });
 
-                    b.OwnsOne("Core.ValueObjects.ClientName", "Name", b1 =>
+                    b.OwnsOne("Core.ValueObjects.ClientName", "ClientName", b1 =>
                         {
                             b1.Property<Guid>("ClientId")
                                 .HasColumnType("uuid");
@@ -91,10 +91,10 @@ namespace Infrastructure.Persistence.Migrations
                                 .HasForeignKey("ClientId");
                         });
 
-                    b.Navigation("Cnpj")
+                    b.Navigation("ClientCnpj")
                         .IsRequired();
 
-                    b.Navigation("Name")
+                    b.Navigation("ClientName")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -24,8 +24,8 @@ public class ClientWriteRepository : IClientWriteRepository
          await _context.Clients.AddAsync(client, cancellationToken);
     }
 
-    public async Task<bool> ExistsByCnpjAsync(ClientCnpj cnpj, CancellationToken cancellationToken)
+    public async Task<bool> ExistsByCnpjAsync(Cnpj cnpj, CancellationToken cancellationToken)
     {
-        return await _context.Clients.AnyAsync(c => c.Cnpj.Value == cnpj.Value, cancellationToken);
+        return await _context.Clients.AnyAsync(c => c.ClientCnpj.Value == cnpj.Value, cancellationToken);
     }
 }

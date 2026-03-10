@@ -9,8 +9,7 @@ namespace Tests.UnitTests.Infrastructure;
 public class UnitOfWorkBehaviorTests
 {
     private class FakeCommand : ICommand<string>;
-    private class FakeQuery : IQuery<string>;
-    
+
     [Fact]
     public async Task Should_call_commit_after_handler()
     {

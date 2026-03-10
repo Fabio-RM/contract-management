@@ -3,6 +3,7 @@ using Application.Clients.Interfaces.Repositories;
 using Application.Common.Interfaces;
 using Application.Common.Pagination;
 using MediatR;
+using Shared.Results;
 
 namespace Application.Clients.Queries;
 
@@ -14,9 +15,9 @@ public static class GetAllClients
         string? StatusFilter = null,
         string? OrderBy = null,
         bool? Descending = false)
-        : PagedQuery, IQuery<PagedResults<ClientDto>>;
+        : PagedQuery, IQuery<Result<PagedResults<ClientDto>>>;
     
-    public class Handler : IRequestHandler<Query, PagedResults<ClientDto>>
+    public class Handler : IRequestHandler<Query, Result<PagedResults<ClientDto>>>
     {
         private readonly IClientQueryRepository _repository;
 
@@ -25,9 +26,11 @@ public static class GetAllClients
             _repository = repository;
         }
     
-        public async Task<PagedResults<ClientDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PagedResults<ClientDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await _repository.GetAllClientsAsync(request, cancellationToken);
+            var result = await _repository.GetAllClientsAsync(request, cancellationToken);
+            
+            return Result<PagedResults<ClientDto>>.Success(result);
         }
     }
 }

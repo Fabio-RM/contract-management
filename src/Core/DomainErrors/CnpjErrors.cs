@@ -1,4 +1,4 @@
-using Shared.Errors;
+using Shared.Results;
 
 namespace Core.DomainErrors;
 
