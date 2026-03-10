@@ -36,11 +36,32 @@ namespace Infrastructure.Persistence.Migrations
                 nullable: false,
                 oldClrType: typeof(DateTime),
                 oldType: "timestamp");
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "CreatedAt",
+                table: "clients",
+                type: "timestamp with time zone",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "UpdatedAt",
+                table: "clients",
+                type: "timestamp with time zone",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "CreatedAt",
+                table: "clients");
+
+            migrationBuilder.DropColumn(
+                name: "UpdatedAt",
+                table: "clients");
+
             migrationBuilder.AlterColumn<DateTime>(
                 name: "updated_at",
                 table: "clients",

@@ -1,6 +1,4 @@
 using Core.AggregateRoots;
-using Core.DomainErrors;
-using Core.Exceptions;
 using Core.ValueObjects;
 using FluentAssertions;
 

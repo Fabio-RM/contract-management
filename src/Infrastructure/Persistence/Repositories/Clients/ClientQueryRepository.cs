@@ -5,6 +5,7 @@ using Application.Common.Pagination;
 using Core.Common;
 using Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Shared.Types;
 
 namespace Infrastructure.Persistence.Repositories.Clients;
 

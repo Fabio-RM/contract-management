@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Core.Common;
+namespace Shared.Types;
 
 public abstract class Enumeration : IComparable
 {

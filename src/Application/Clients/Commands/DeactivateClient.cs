@@ -1,4 +1,3 @@
-using Application.Clients.Exceptions;
 using Application.Common.Interfaces;
 using Core.DomainErrors;
 using Core.Interfaces.Repositories;
@@ -13,12 +12,10 @@ public static class DeactivateClient
     public class Handler : IRequestHandler<Command, Result>
     {
         private readonly IClientWriteRepository _repository;
-        private readonly IDateTimeProvider _dateTimeProvider;
     
-        public Handler(IClientWriteRepository repository, IDateTimeProvider dateTimeProvider)
+        public Handler(IClientWriteRepository repository)
         {
             _repository = repository;
-            _dateTimeProvider = dateTimeProvider;
         }
     
         public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
@@ -28,7 +25,7 @@ public static class DeactivateClient
             if (client is null) 
                 return Result.Failure(ClientErrors.NotFound);
         
-            client.Deactivate(_dateTimeProvider.UtcNow);
+            client.Deactivate(DateTime.UtcNow);
         
             return Result.Success();
         }

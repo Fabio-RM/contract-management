@@ -28,6 +28,9 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
@@ -35,6 +38,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer")
                         .HasColumnName("status");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("created_at")
                         .HasColumnType("timestamp with time zone");
@@ -50,7 +56,7 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Core.AggregateRoots.Client", b =>
                 {
-                    b.OwnsOne("Core.ValueObjects.ClientCnpj", "ClientCnpj", b1 =>
+                    b.OwnsOne("Core.ValueObjects.Cnpj", "ClientCnpj", b1 =>
                         {
                             b1.Property<Guid>("ClientId")
                                 .HasColumnType("uuid");
@@ -72,7 +78,7 @@ namespace Infrastructure.Persistence.Migrations
                                 .HasForeignKey("ClientId");
                         });
 
-                    b.OwnsOne("Core.ValueObjects.ClientName", "ClientName", b1 =>
+                    b.OwnsOne("Core.ValueObjects.Name", "ClientName", b1 =>
                         {
                             b1.Property<Guid>("ClientId")
                                 .HasColumnType("uuid");

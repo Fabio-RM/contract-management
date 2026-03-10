@@ -1,11 +1,11 @@
+using Core.Common;
 using Core.DomainErrors;
-using Core.Exceptions;
 using Core.ValueObjects;
 using Shared.Results;
 
 namespace Core.AggregateRoots;
 
-public class Client
+public class Client : AuditableEntity
 {
     public Guid Id { get; private set; }
     public Cnpj ClientCnpj { get; private set; }
@@ -21,6 +21,8 @@ public class Client
         ClientCnpj = clientCnpj;
         ClientName = clientName;
         Status = ClientStatus.Active;
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
         DeletedAt = null;
     }
 
@@ -44,6 +46,7 @@ public class Client
             return Result.Failure(ClientErrors.IsInactive);
 
         ClientName = newName;
+        UpdatedAt = DateTime.UtcNow;
         
         return Result.Success();
     }
@@ -54,6 +57,7 @@ public class Client
             return Result.Failure(ClientErrors.IsInactive);
         
         Status = ClientStatus.Inactive;
+        UpdatedAt = DateTime.UtcNow;
         DeletedAt = utcNow;
         
         return Result.Success();
@@ -65,6 +69,7 @@ public class Client
             return Result.Failure(ClientErrors.IsActive);
         
         Status = ClientStatus.Active;
+        UpdatedAt = DateTime.UtcNow;
         DeletedAt = null;
         
         return Result.Success();

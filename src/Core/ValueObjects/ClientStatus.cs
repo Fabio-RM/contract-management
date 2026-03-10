@@ -1,4 +1,5 @@
 using Core.Common;
+using Shared.Types;
 
 namespace Core.ValueObjects;
 

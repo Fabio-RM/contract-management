@@ -3,6 +3,7 @@ using Core.Common;
 using Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shared.Types;
 
 namespace Infrastructure.Persistence.Configurations;
 
