@@ -41,7 +41,7 @@ public class Client : AuditableEntity
     public Result Rename(Name newName)
     {
         if (Status.Equals(ClientStatus.Inactive))
-            return Result.Failure(ClientErrors.IsInactive);
+            return Result.Failure(ClientErrors.AlreadyInactive);
 
         ClientName = newName;
         
@@ -51,7 +51,7 @@ public class Client : AuditableEntity
     public Result Deactivate(DateTime utcNow)
     {
         if (Status.Equals(ClientStatus.Inactive)) 
-            return Result.Failure(ClientErrors.IsInactive);
+            return Result.Failure(ClientErrors.AlreadyInactive);
         
         Status = ClientStatus.Inactive;
         DeletedAt = utcNow;
@@ -62,7 +62,7 @@ public class Client : AuditableEntity
     public Result Activate()
     {
         if (Status.Equals(ClientStatus.Active))
-            return Result.Failure(ClientErrors.IsActive);
+            return Result.Failure(ClientErrors.AlreadyActive);
         
         Status = ClientStatus.Active;
         DeletedAt = null;

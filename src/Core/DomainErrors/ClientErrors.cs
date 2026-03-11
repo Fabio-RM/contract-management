@@ -4,15 +4,15 @@ namespace Core.DomainErrors;
 
 public static class ClientErrors
 {
-    public static readonly Error IsActive =
+    public static readonly Error AlreadyActive =
         Error.Conflict(
-            "Client.IsActive", 
-            "Cliente está ativo");
+            "Client.AlreadyActive", 
+            "Cliente já está ativo");
     
-    public static readonly Error IsInactive =
+    public static readonly Error AlreadyInactive =
         Error.Conflict(
-            "Client.IsInactive", 
-            "Cliente está inativo");
+            "Client.AlreadyInactive", 
+            "Cliente já está inativo");
     
     public static readonly Error AlreadyExists =
         Error.Conflict(
