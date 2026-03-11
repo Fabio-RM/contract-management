@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260302234756_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260311155117_CreateClientsTable")]
+    partial class CreateClientsTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.3")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -31,19 +31,21 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
-                    b.Property<DateTime>("created_at")
-                        .HasColumnType("timestamp");
-
-                    b.Property<DateTime?>("updated_at")
-                        .HasColumnType("timestamp");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("client_id");
@@ -53,7 +55,7 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Core.AggregateRoots.Client", b =>
                 {
-                    b.OwnsOne("Core.ValueObjects.ClientCnpj", "Cnpj", b1 =>
+                    b.OwnsOne("Core.ValueObjects.Cnpj", "ClientCnpj", b1 =>
                         {
                             b1.Property<Guid>("ClientId")
                                 .HasColumnType("uuid");
@@ -75,7 +77,7 @@ namespace Infrastructure.Persistence.Migrations
                                 .HasForeignKey("ClientId");
                         });
 
-                    b.OwnsOne("Core.ValueObjects.ClientName", "Name", b1 =>
+                    b.OwnsOne("Core.ValueObjects.Name", "ClientName", b1 =>
                         {
                             b1.Property<Guid>("ClientId")
                                 .HasColumnType("uuid");
@@ -94,10 +96,10 @@ namespace Infrastructure.Persistence.Migrations
                                 .HasForeignKey("ClientId");
                         });
 
-                    b.Navigation("Cnpj")
+                    b.Navigation("ClientCnpj")
                         .IsRequired();
 
-                    b.Navigation("Name")
+                    b.Navigation("ClientName")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

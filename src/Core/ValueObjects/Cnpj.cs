@@ -18,10 +18,10 @@ public class Cnpj : ValueObject
     
     public static Result<Cnpj> Create(string value)
     {
-        string normalizedCnpj = Regex.Replace(value, @"[./-]", "").Trim();
-
-        if (string.IsNullOrWhiteSpace(normalizedCnpj))
+        if (string.IsNullOrWhiteSpace(value))
             return Result<Cnpj>.Failure(CnpjErrors.CnpjEmpty);
+        
+        string normalizedCnpj = Regex.Replace(value, @"[./-]", "").Trim();
 
         if (normalizedCnpj.Length != MaxLength)
             return Result<Cnpj>.Failure(CnpjErrors.CnpjInvalidLength);

@@ -26,7 +26,10 @@ public static class ActivateClient
             if (client is null)
                 return Result.Failure(ClientErrors.NotFound);
         
-            client.Activate();
+            var result = client.Activate();
+            
+            if (result.IsFailure)
+                return Result.Failure(result.Errors);
         
             return Result.Success();
         }

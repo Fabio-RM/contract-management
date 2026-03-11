@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class CreateClientsTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,9 +19,9 @@ namespace Infrastructure.Persistence.Migrations
                     cnpj = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false),
                     name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
-                    deleted_at = table.Column<DateTime>(type: "timestamp", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamp", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "timestamp", nullable: true)
+                    deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {

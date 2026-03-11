@@ -1,5 +1,4 @@
 using Application.Clients.Commands;
-using Application.Common.Interfaces;
 using Core.AggregateRoots;
 using FluentAssertions;
 using Moq;
@@ -32,12 +31,7 @@ public class DeactivateClientTests
     public async Task Should_fail_if_client_does_not_exist()
     {
         var repository = new FakeClientsWriteRepository();
-        
-        var dateTimeMock = new Mock<IDateTimeProvider>();
-        var fixedDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        
-        dateTimeMock.Setup(d => d.UtcNow).Returns(fixedDate);
-        
+
         var handler = new DeactivateClient.Handler(repository);
         var command = new DeactivateClient.Command(Guid.NewGuid());
         

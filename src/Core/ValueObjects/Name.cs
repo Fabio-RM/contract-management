@@ -16,12 +16,10 @@ public class Name : ValueObject
 
     public static Result<Name> Create(string value)
     {
-        var errors = new List<Error>();
+        if (string.IsNullOrWhiteSpace(value))
+            return Result<Name>.Failure(NameErrors.NameEmpty);
         
         string normalizedName = value.Trim();
-
-        if (string.IsNullOrWhiteSpace(normalizedName))
-            return Result<Name>.Failure(NameErrors.NameEmpty);
 
         if (normalizedName.Length > MaxLength)
             return Result<Name>.Failure(NameErrors.NameTooLong);

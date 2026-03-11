@@ -25,7 +25,10 @@ public static class DeactivateClient
             if (client is null) 
                 return Result.Failure(ClientErrors.NotFound);
         
-            client.Deactivate(DateTime.UtcNow);
+            var result = client.Deactivate(DateTime.UtcNow);
+            
+            if (result.IsFailure)
+                return Result.Failure(result.Errors);
         
             return Result.Success();
         }

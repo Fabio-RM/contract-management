@@ -1,6 +1,5 @@
 using Application.Clients.Commands;
 using Core.AggregateRoots;
-using Core.ValueObjects;
 using FluentAssertions;
 
 namespace Tests.UnitTests.Application.Clients.Commands;

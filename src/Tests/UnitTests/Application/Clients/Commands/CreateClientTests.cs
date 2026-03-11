@@ -1,5 +1,4 @@
 using Application.Clients.Commands;
-using Core.AggregateRoots;
 using FluentAssertions;
 using Xunit.Abstractions;
 
@@ -7,13 +6,6 @@ namespace Tests.UnitTests.Application.Clients.Commands;
 
 public class CreateClientTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public CreateClientTests(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-    }
-
     [Fact]
     public async Task Should_create_client_and_add_to_repository()
     {

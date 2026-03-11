@@ -1,4 +1,3 @@
-using System.Data.Common;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

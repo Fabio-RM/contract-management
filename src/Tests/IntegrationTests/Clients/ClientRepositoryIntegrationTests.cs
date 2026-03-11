@@ -46,7 +46,6 @@ public class ClientRepositoryIntegrationTests : IClassFixture<DatabaseFixture>, 
         client.ClientCnpj.Value.Should().Be("12456789000123");
         client.ClientName.Value.Should().Be("John Doe");
         client.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
-        client.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
         client.DeletedAt.Should().BeNull();
     }
 

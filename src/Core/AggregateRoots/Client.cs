@@ -21,7 +21,6 @@ public class Client : AuditableEntity
         ClientCnpj = clientCnpj;
         ClientName = clientName;
         Status = ClientStatus.Active;
-        CreatedAt = DateTime.UtcNow;
         DeletedAt = null;
     }
 
